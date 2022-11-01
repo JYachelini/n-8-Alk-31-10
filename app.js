@@ -7,8 +7,9 @@ const cors = require('cors')
 require('dotenv').config()
 
 const indexRouter = require('./routes/index')
+const { sequelize } = require('./database/models/')
 
-const port = process.env.PORT || 3000
+const PORT = process.env.PORT || 3000
 
 const app = express()
 app.use(cors())
@@ -23,23 +24,42 @@ app.use('/', indexRouter)
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
-  next(createError(404))
+	next(createError(404))
 })
 
 // error handler
 app.use((err, req, res) => {
-  // set locals, only providing error in development
-  res.locals.message = err.message
-  res.locals.error = req.app.get('env') === 'development' ? err : {}
+	// set locals, only providing error in development
+	res.locals.message = err.message
+	res.locals.error = req.app.get('env') === 'development' ? err : {}
 
-  // render the error page
-  res.status(err.status || 500)
-  res.render('error')
+	// render the error page
+	res.status(err.status || 500)
+	res.render('error')
 })
 
-app.listen(port, () => {
-  // eslint-disable-next-line no-console
-  console.log(`Servidor funcionando en el puerto ${port}`)
-})
+// app.listen(port, () => {
+// 	// eslint-disable-next-line no-console
+// 	sequelize
+// 		.authenticate()
+// 		.then(() => {
+// 			console.log('Connected to db')
+// 		})
+// 		.catch((error) => {
+// 			console.log(`Error connecting to db: ${error}`)
+// 		})
+// 	console.log(`Servidor funcionando en el puerto ${port}`)
+// })
+sequelize
+	.sync()
+	.then(() => {
+		console.log('Database connected')
+		app.listen(PORT, () => {
+			console.log(`Server listening at ${PORT}`) // eslint-disable-line no-console
+		})
+	})
+	.catch((err) => {
+		console.log(err)
+	})
 
 module.exports = app
