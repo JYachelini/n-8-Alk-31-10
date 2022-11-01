@@ -51,13 +51,15 @@ app.use((err, req, res) => {
 // 	console.log(`Servidor funcionando en el puerto ${port}`)
 // })
 sequelize
-	.authenticate()
+	.sync()
 	.then(() => {
 		console.log('Database connected')
 		app.listen(PORT, () => {
 			console.log(`Server listening at ${PORT}`) // eslint-disable-line no-console
 		})
 	})
-	.catch(() => {})
+	.catch((err) => {
+		console.log(err)
+	})
 
 module.exports = app
