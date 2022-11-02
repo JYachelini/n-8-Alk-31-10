@@ -2,7 +2,6 @@ const createHttpError = require("http-errors");
 const { User } = require("../database/models");
 const { endpointResponse } = require("../helpers/success");
 const { catchAsync } = require("../helpers/catchAsync");
-const { check } = require("express-validator");
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
