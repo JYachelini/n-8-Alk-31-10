@@ -18,7 +18,8 @@ module.exports = (sequelize, DataTypes) => {
     Role.init({
         id: DataTypes.INTEGER,
         name: DataTypes.STRING,
-        description: DataTypes.STRING
+        description: DataTypes.STRING,
+        deletedAt: DataTypes.DATE
     }, {
         sequelize,
         timestamps: true,
