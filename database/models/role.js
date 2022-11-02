@@ -16,11 +16,10 @@ module.exports = (sequelize, DataTypes) => {
         }
     };
     Role.init({
+   
         name: DataTypes.STRING,
         description: DataTypes.STRING,
-        deletedAt: {
-          type: DataTypes.STRING
-        },
+        deletedAt: DataTypes.DATE
       }, {
         sequelize,
         timestamps: true,

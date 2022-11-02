@@ -8,7 +8,9 @@ const  bcrypt  = require('bcrypt')
 module.exports = {
   get: catchAsync(async (req, res, next) => {
     try {
-      const response = await User.findAll()
+      const response = await User.findAll({
+        attributes:['fistName','LastName','email','createdAt']
+      })
       endpointResponse({
         res,
         message: 'Users retrieved successfully',
@@ -35,6 +37,7 @@ module.exports = {
         email,
         password
       })
+      
       endpointResponse({
         res,
         message:'success',
