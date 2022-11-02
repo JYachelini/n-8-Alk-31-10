@@ -1,0 +1,15 @@
+version: '2.4'
+services:
+ mysql:
+  container_name: walletDB
+  image: mysql:latest
+  volumes:
+   - ./db-data/db:/var/lib/mysql
+  ports:
+   - '3306:3306'
+  hostname: walletDB
+  environment:
+   MYSQL_DATABASE: ${DB_NAME}
+   MYSQL_USER: ${DB_USER}
+   MYSQL_PASSWORD: ${DB_PASSWORD}
+   MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
