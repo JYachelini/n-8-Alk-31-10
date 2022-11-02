@@ -44,4 +44,29 @@ module.exports = {
       next(httpError);
     }
   }),
+
+  update: catchAsync(async (req, res, next) => {
+    try {
+      const data = req.body;
+      const response = await User.update(data, {
+        where: { id: req.params.id },
+      });
+      console.log(response);
+      if (!response[0] == 0) {
+        endpointResponse({
+          res,
+          message: "Users updated successfully",
+          body: response,
+        });
+      } else {
+        res.status(400).json({ message: "id not found or nathing to change " });
+      }
+    } catch (error) {
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error updating users] - [index - GET]: ${error.message}`
+      );
+      next(httpError);
+    }
+  }),
 };
