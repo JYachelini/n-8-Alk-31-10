@@ -10,7 +10,7 @@ module.exports = {
       const response = await Category.findAll();
       endpointResponse({
         res,
-        message: 'Users retrieved successfully',
+        message: 'Categories retrieved successfully',
         body: response,
       });
     } catch (error) {
