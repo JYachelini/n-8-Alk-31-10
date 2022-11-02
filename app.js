@@ -38,20 +38,8 @@ app.use((err, req, res) => {
 	res.render('error')
 })
 
-// app.listen(port, () => {
-// 	// eslint-disable-next-line no-console
-// 	sequelize
-// 		.authenticate()
-// 		.then(() => {
-// 			console.log('Connected to db')
-// 		})
-// 		.catch((error) => {
-// 			console.log(`Error connecting to db: ${error}`)
-// 		})
-// 	console.log(`Servidor funcionando en el puerto ${port}`)
-// })
 sequelize
-	.sync()
+	.sync({ logging: false })
 	.then(() => {
 		console.log('Database connected')
 		app.listen(PORT, () => {
