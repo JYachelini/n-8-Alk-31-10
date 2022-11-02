@@ -1,3 +1,11 @@
+/*
+    Campos:
+    id: INTEGER NOT NULL AUTO_INCREMENT
+    name: STRING NOT NULL
+    description: STRING NULLABLE
+    timestamps
+*/
+
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -9,10 +17,16 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       description: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      deletedAt: {
+        allowNull: true,
+        type: Sequelize.DATE
       },
       createdAt: {
         allowNull: false,
