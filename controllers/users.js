@@ -2,6 +2,7 @@ const createHttpError = require("http-errors");
 const { User } = require("../database/models");
 const { endpointResponse } = require("../helpers/success");
 const { catchAsync } = require("../helpers/catchAsync");
+const { check } = require("express-validator");
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
@@ -48,8 +49,11 @@ module.exports = {
   update: catchAsync(async (req, res, next) => {
     try {
       const data = req.body;
+      const { id } = req.params;
       const response = await User.update(data, {
-        where: { id: req.params.id },
+        where: { id },
+        returning: true,
+        plain: true,
       });
       console.log(response);
       if (!response[0] == 0) {
@@ -59,7 +63,7 @@ module.exports = {
           body: response,
         });
       } else {
-        res.status(400).json({ message: "id not found or nathing to change " });
+        res.status(400).json({ message: "id not found or nothing to change " });
       }
     } catch (error) {
       const httpError = createHttpError(
