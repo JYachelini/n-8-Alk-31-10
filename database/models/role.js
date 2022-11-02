@@ -16,11 +16,12 @@ module.exports = (sequelize, DataTypes) => {
         }
     };
     Role.init({
-        id: DataTypes.INTEGER,
         name: DataTypes.STRING,
         description: DataTypes.STRING,
-        deletedAt: DataTypes.DATE
-    }, {
+        deletedAt: {
+          type: DataTypes.STRING
+        },
+      }, {
         sequelize,
         timestamps: true,
         modelName: 'Role',
