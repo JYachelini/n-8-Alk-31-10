@@ -1,10 +1,4 @@
-/*
-    Campos:
-    id: INTEGER NOT NULL AUTO_INCREMENT
-    name: STRING NOT NULL
-    description: STRING NULLABLE
-    timestamps
-*/
+
 
 'use strict';
 const {
@@ -22,19 +16,9 @@ module.exports = (sequelize, DataTypes) => {
         }
     };
     Role.init({
-        id: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            autoIncrement: true,
-        },
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        description: {
-            type: DataTypes.STRING,
-            allowNull: true
-        }
+        id: DataTypes.INTEGER,
+        name: DataTypes.STRING,
+        description: DataTypes.STRING
     }, {
         sequelize,
         timestamps: true,
