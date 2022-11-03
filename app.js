@@ -39,7 +39,7 @@ app.use((err, req, res) => {
 });
 
 sequelize
-  .sync({ logging: false })
+  .sync({ force: true })
   .then(() => {
     console.log('Database connected');
     app.listen(PORT, () => {
