@@ -1,21 +1,20 @@
-const createHttpError = require('http-errors')
-const { User } = require('../database/models')
-const { endpointResponse } = require('../helpers/success')
-const { catchAsync } = require('../helpers/catchAsync')
-const  bcrypt  = require('bcrypt')
+const createHttpError = require('http-errors');
+const { User } = require('../database/models');
+const { endpointResponse } = require('../helpers/success');
+const { catchAsync } = require('../helpers/catchAsync');
+const bcrypt = require('bcrypt');
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
   get: catchAsync(async (req, res, next) => {
     try {
-
-       const response = await User.findAll({
-        attributes:['fistName','LastName','email','createdAt']
-      })
+      const response = await User.findAll({
+        attributes: ['firstName', 'LastName', 'email', 'createdAt'],
+      });
 
       endpointResponse({
         res,
-        message: "Users retrieved successfully",
+        message: 'Users retrieved successfully',
         body: response,
       });
     } catch (error) {
@@ -29,35 +28,36 @@ module.exports = {
 
   create: catchAsync(async (req, res, next) => {
     try {
-      let {fistName,lastName,email,password} = req.body
+      let { firstName, lastName, email, password } = req.body;
 
-      password = bcrypt.hashSync(password,10)
- 
-      const [response,created] = await User.findOrCreate({
-       where:{
-        email
-       },
-       defaults:{
-        fistName,
-        lastName,
-        email,
-        password
-       }
-      })
+      password = bcrypt.hashSync(password, 10);
 
-      if(!created) return res.status(400).json({message: 'user or email already exist'})
-      
+      const [response, created] = await User.findOrCreate({
+        where: {
+          email,
+        },
+        defaults: {
+          firstName,
+          lastName,
+          email,
+          password,
+        },
+      });
+
+      if (!created)
+        return res.status(400).json({ message: 'user or email already exist' });
+
       endpointResponse({
         res,
-        message:'success',
-        body: response
-      })
-    } catch(error) {
+        message: 'success',
+        body: response,
+      });
+    } catch (error) {
       const httpError = createHttpError(
         error.statusCode,
-        `[Error retrieving users] - [index - GET]: ${error.message}`,
-      )
-      next(httpError)
+        `[Error retrieving users] - [index - GET]: ${error.message}`
+      );
+      next(httpError);
     }
   }),
 
@@ -70,11 +70,11 @@ module.exports = {
       if (response) {
         endpointResponse({
           res,
-          message: "Users deleted successfully",
+          message: 'Users deleted successfully',
           body: response,
         });
       } else {
-        res.status(400).json({ message: "id not found " });
+        res.status(400).json({ message: 'id not found ' });
       }
     } catch (error) {
       const httpError = createHttpError(
@@ -87,22 +87,22 @@ module.exports = {
 
   update: catchAsync(async (req, res, next) => {
     try {
-      const data = req.body;
+      let { firstName, lastName, email, password } = req.body;
       const { id } = req.params;
-      const response = await User.update(data, {
-        where: { id },
-        returning: true,
-        plain: true,
-      });
-      console.log(response);
+      const response = await User.update(
+        { firstName, lastName, email, password },
+        {
+          where: { id },
+        }
+      );
       if (!response[0] == 0) {
         endpointResponse({
           res,
-          message: "Users updated successfully",
+          message: 'Users updated successfully',
           body: response,
         });
       } else {
-        res.status(400).json({ message: "id not found or nothing to change " });
+        res.status(400).json({ message: 'id not found or nothing to change ' });
       }
     } catch (error) {
       const httpError = createHttpError(
@@ -112,7 +112,4 @@ module.exports = {
       next(httpError);
     }
   }),
-
-  
 };
-
