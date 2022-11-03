@@ -4,7 +4,6 @@ const { endpointResponse } = require('../helpers/success')
 const { catchAsync } = require('../helpers/catchAsync')
 const  bcrypt  = require('bcrypt')
 
-
 // example of a controller. First call the service, then build the controller method
 module.exports = {
   get: catchAsync(async (req, res, next) => {
@@ -34,12 +33,19 @@ module.exports = {
 
       password = bcrypt.hashSync(password,10)
  
-      const response = await User.create({
+      const [response,created] = await User.findOrCreate({
+       where:{
+        email
+       },
+       defaults:{
         fistName,
         lastName,
         email,
         password
+       }
       })
+
+      if(!created) return res.status(400).json({message: 'user or email already exist'})
       
       endpointResponse({
         res,
@@ -53,8 +59,7 @@ module.exports = {
       )
       next(httpError)
     }
-  })
-}
+  }),
 
   remove: catchAsync(async (req, res, next) => {
     try {
@@ -107,5 +112,7 @@ module.exports = {
       next(httpError);
     }
   }),
+
+  
 };
 
