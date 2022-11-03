@@ -51,3 +51,4 @@ sequelize
   });
 
 module.exports = app;
+
