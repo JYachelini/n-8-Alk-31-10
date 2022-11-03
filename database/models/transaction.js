@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Transaction.hasMany(models.User, { foreignKey: 'userId' });
+      Transaction.belongsTo(models.User, { foreignKey: 'userId' });
       Transaction.belongsTo(models.Category, { foreignKey: 'categoryId' });
     }
   }
@@ -24,7 +24,6 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       timestamps: true,
       paranoid: true,
-      deletedAt: 'destroyTime',
       modelName: 'Transaction',
     }
   );
