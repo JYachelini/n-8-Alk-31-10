@@ -6,9 +6,11 @@ const { validator } = require('../middlewares/validator')
 
 const router = express.Router();
 
+
 router.get("/", get);
 router.post("/",validator(userCreate), create);
 router.delete("/:id", remove);
 router.put("/:id", update);
 
-module.exports = router;
+module.exports = router
+

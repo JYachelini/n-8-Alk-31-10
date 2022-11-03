@@ -1,14 +1,18 @@
-const createHttpError = require("http-errors");
-const { User } = require("../database/models");
-const { endpointResponse } = require("../helpers/success");
-const { catchAsync } = require("../helpers/catchAsync");
-const bcrypt = require('bcrypt')
+const createHttpError = require('http-errors')
+const { User } = require('../database/models')
+const { endpointResponse } = require('../helpers/success')
+const { catchAsync } = require('../helpers/catchAsync')
+const  bcrypt  = require('bcrypt')
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
   get: catchAsync(async (req, res, next) => {
     try {
-      const response = await User.findAll();
+
+       const response = await User.findAll({
+        attributes:['fistName','LastName','email','createdAt']
+      })
+
       endpointResponse({
         res,
         message: "Users retrieved successfully",
@@ -56,9 +60,6 @@ module.exports = {
       next(httpError)
     }
   }),
-
-
-  
 
   remove: catchAsync(async (req, res, next) => {
     try {
@@ -114,3 +115,4 @@ module.exports = {
 
   
 };
+
