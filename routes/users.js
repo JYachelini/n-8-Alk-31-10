@@ -1,11 +1,11 @@
 const express = require("express");
-const { get, remove } = require("../controllers/users");
-const { check, param } = require("express-validator");
+
+const { get, remove, update } = require("../controllers/users");
 
 const router = express.Router();
 
-const Validator = [param("id").isInt().withMessage("id must be an integer")];
-
 router.get("/", get);
-router.delete("/:id", Validator, remove);
+router.delete("/:id", remove);
+router.put("/:id", update);
+
 module.exports = router;
