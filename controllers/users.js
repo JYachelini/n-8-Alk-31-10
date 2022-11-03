@@ -9,7 +9,7 @@ module.exports = {
   get: catchAsync(async (req, res, next) => {
     try {
       const response = await User.findAll({
-        attributes: ['fistName', 'LastName', 'email', 'createdAt'],
+        attributes: ['firstName', 'lastName', 'email', 'createdAt'],
       });
 
       endpointResponse({
@@ -28,7 +28,7 @@ module.exports = {
 
   create: catchAsync(async (req, res, next) => {
     try {
-      let { fistName, lastName, email, password } = req.body;
+      let { firstName, lastName, email, password } = req.body;
 
       password = bcrypt.hashSync(password, 10);
 
@@ -37,12 +37,13 @@ module.exports = {
           email,
         },
         defaults: {
-          fistName,
+          firstName,
           lastName,
           email,
           password,
         },
       });
+      console.log(response, created);
 
       if (!created)
         return res.status(400).json({ message: 'user or email already exist' });
