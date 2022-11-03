@@ -12,10 +12,12 @@ module.exports = {
         type: Sequelize.STRING,
       },
       amount: {
+        allowNull: false,
         type: Sequelize.DECIMAL,
       },
 
       userId: {
+        allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: 'Users',
@@ -25,6 +27,7 @@ module.exports = {
         onDelete: 'CASCADE',
       },
       categoryId: {
+        allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: 'Categories',
@@ -34,6 +37,7 @@ module.exports = {
         onDelete: 'CASCADE',
       },
       date: {
+        allowNull: false,
         type: Sequelize.DATE,
       },
       createdAt: {
