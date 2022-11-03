@@ -9,7 +9,7 @@ module.exports = {
   get: catchAsync(async (req, res, next) => {
     try {
       const response = await User.findAll({
-        attributes: ['firstName', 'LastName', 'email', 'createdAt'],
+        attributes: ['firstName', 'lastName', 'email', 'createdAt'],
       });
 
       endpointResponse({
@@ -43,7 +43,6 @@ module.exports = {
           password,
         },
       });
-
       if (!created)
         return res.status(400).json({ message: 'user or email already exist' });
 
