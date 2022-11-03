@@ -43,8 +43,6 @@ module.exports = {
           password,
         },
       });
-      console.log(response, created);
-
       if (!created)
         return res.status(400).json({ message: 'user or email already exist' });
 
@@ -88,14 +86,14 @@ module.exports = {
 
   update: catchAsync(async (req, res, next) => {
     try {
-      const data = req.body;
+      let { firstName, lastName, email, password } = req.body;
       const { id } = req.params;
-      const response = await User.update(data, {
-        where: { id },
-        returning: true,
-        plain: true,
-      });
-      console.log(response);
+      const response = await User.update(
+        { firstName, lastName, email, password },
+        {
+          where: { id },
+        }
+      );
       if (!response[0] == 0) {
         endpointResponse({
           res,
