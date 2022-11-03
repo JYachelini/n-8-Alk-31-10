@@ -2,7 +2,7 @@ const createHttpError = require('http-errors');
 const { Transaction } = require('../database/models');
 const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
-const { Transaction } = require('sequelize');
+
 
 
 module.exports = {
