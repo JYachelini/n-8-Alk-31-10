@@ -26,6 +26,27 @@ module.exports = {
     }
   }),
 
+  getById: catchAsync(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const response = await User.findByPk(id, { raw: true });
+
+      if (!response) throw { statusCode: 404, message: 'User not found' };
+
+      endpointResponse({
+        res,
+        message: 'Users retrieved successfully',
+        body: response,
+      });
+    } catch (error) {
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error retrieving users] - [index - GET]: ${error.message}`
+      );
+      next(httpError);
+    }
+  }),
+
   create: catchAsync(async (req, res, next) => {
     try {
       let { firstName, lastName, email, password } = req.body;
