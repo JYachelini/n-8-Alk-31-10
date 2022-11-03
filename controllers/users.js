@@ -24,8 +24,9 @@ module.exports = {
 
   remove: catchAsync(async (req, res, next) => {
     try {
+      const { id } = req.params;
       const response = await User.destroy({
-        where: { id: req.params.id },
+        where: { id },
       });
       if (response) {
         endpointResponse({
@@ -39,7 +40,7 @@ module.exports = {
     } catch (error) {
       const httpError = createHttpError(
         error.statusCode,
-        `[Error deleting users] - [index - GET]: ${error.message}`
+        `[Error deleting users] - [index - DELETE]: ${error.message}`
       );
       next(httpError);
     }
