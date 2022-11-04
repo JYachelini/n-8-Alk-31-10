@@ -16,4 +16,22 @@ module.exports = {
       next(error);
     }
   }),
+
+  create: catchAsync(async (req, res, next) => {
+    try {
+      const { name, description } = req.body;
+      const response = await Category.create({
+        name,
+        description,
+      });
+
+      endpointResponse({
+        res,
+        message: 'Category created successfully',
+        body: response,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }),
 };
