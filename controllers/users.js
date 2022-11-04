@@ -2,7 +2,7 @@ const createHttpError = require('http-errors');
 const { User } = require('../database/models');
 const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
-const bcrypt = require('bcrypt');
+const bcrypt = require('../utils/bcrypt.util');
 const { ErrorObject } = require('../helpers/error');
 
 // example of a controller. First call the service, then build the controller method
@@ -51,8 +51,8 @@ module.exports = {
   create: catchAsync(async (req, res, next) => {
     try {
       let { firstName, lastName, email, password } = req.body;
-
-      password = bcrypt.hashSync(password, 10);
+      password = await bcrypt.hashData(password, 10);
+      console.log(password);
 
       const [response, created] = await User.findOrCreate({
         where: {
@@ -110,6 +110,7 @@ module.exports = {
   update: catchAsync(async (req, res, next) => {
     try {
       let { firstName, lastName, email, password } = req.body;
+      password = await bcrypt.hashData(password);
       const { id } = req.params;
       const response = await User.update(
         { firstName, lastName, email, password },
