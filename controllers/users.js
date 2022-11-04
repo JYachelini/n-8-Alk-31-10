@@ -3,6 +3,7 @@ const { User } = require('../database/models');
 const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
 const bcrypt = require('bcrypt');
+const { ErrorObject } = require('../helpers/error');
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
@@ -11,6 +12,27 @@ module.exports = {
       const response = await User.findAll({
         attributes: ['firstName', 'lastName', 'email', 'createdAt'],
       });
+
+      endpointResponse({
+        res,
+        message: 'Users retrieved successfully',
+        body: response,
+      });
+    } catch (error) {
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error retrieving users] - [index - GET]: ${error.message}`
+      );
+      next(httpError);
+    }
+  }),
+
+  getById: catchAsync(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const response = await User.findByPk(id, { raw: true });
+
+      if (!response) throw new ErrorObject('User not found', 404);
 
       endpointResponse({
         res,
