@@ -3,6 +3,7 @@ const { User } = require('../database/models');
 const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
 const bcrypt = require('bcrypt');
+const { ErrorObject } = require('../helpers/error');
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
@@ -31,7 +32,7 @@ module.exports = {
       const { id } = req.params;
       const response = await User.findByPk(id, { raw: true });
 
-      if (!response) throw { statusCode: 404, message: 'User not found' };
+      if (!response) throw new ErrorObject('User not found', 404);
 
       endpointResponse({
         res,
