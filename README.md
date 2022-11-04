@@ -1,3 +1,15 @@
+# Scripts para agilizar el desarrollo
+
+### Seedear el DB
+```
+npm run seed
+```
+
+### Migrar el DB
+```
+npm run migrate
+```
+
 # Backend Node Template
 
 ## ✅ Primero lo primero: instalar las dependencias iniciales del proyecto antes de trabajar:
