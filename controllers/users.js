@@ -31,7 +31,7 @@ module.exports = {
       const { id } = req.params;
       const response = await User.findByPk(id, { raw: true });
 
-      if (!response) throw { statusCode: 404, message: 'User not found' };
+      if (!response) throw new ErrorObject('User not found', 404);
 
       endpointResponse({
         res,
