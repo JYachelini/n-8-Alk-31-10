@@ -1,4 +1,3 @@
-const createHttpError = require('http-errors');
 const { Category } = require('../database/models');
 const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
@@ -14,11 +13,7 @@ module.exports = {
         body: response,
       });
     } catch (error) {
-      const httpError = createHttpError(
-        error.statusCode,
-        `[Error retrieving users] - [index - GET]: ${error.message}`
-      );
-      next(httpError);
+      next(error);
     }
   }),
 };
