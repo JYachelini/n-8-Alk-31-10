@@ -29,7 +29,7 @@ app.use((req, res, next) => {
 
 // error handler
 
-app.use((err, req, res) => {
+app.use((err, req, res,next) => {
   const status = err.statusCode || 500;
   const message = err.message || err;
   console.error(err);
