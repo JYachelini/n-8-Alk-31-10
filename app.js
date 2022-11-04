@@ -28,14 +28,12 @@ app.use((req, res, next) => {
 });
 
 // error handler
-app.use((err, req, res) => {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+app.use((err, req, res) => {
+  const status = err.statusCode || 500;
+  const message = err.message || err;
+  console.error(err);
+  res.status(status).send(message);
 });
 
 sequelize
@@ -51,4 +49,3 @@ sequelize
   });
 
 module.exports = app;
-

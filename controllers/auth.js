@@ -1,4 +1,3 @@
-const createHttpError = require('http-errors');
 const { catchAsync } = require('../helpers/catchAsync');
 const { User } = require('../database/models');
 const bcrypt = require('../utils/bcrypt.util');
@@ -27,11 +26,7 @@ module.exports = {
         body: userFound,
       });
     } catch (error) {
-      const httpError = createHttpError(
-        error.statusCode,
-        `[Error login] - [auth/login - POST]: ${error.message.ok}`
-      );
-      next(httpError);
+      next(error);
     }
   }),
 };

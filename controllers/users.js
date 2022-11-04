@@ -1,4 +1,3 @@
-const createHttpError = require('http-errors');
 const { User } = require('../database/models');
 const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
@@ -19,11 +18,7 @@ module.exports = {
         body: response,
       });
     } catch (error) {
-      const httpError = createHttpError(
-        error.statusCode,
-        `[Error retrieving users] - [index - GET]: ${error.message}`
-      );
-      next(httpError);
+      next(error);
     }
   }),
 
@@ -40,20 +35,14 @@ module.exports = {
         body: response,
       });
     } catch (error) {
-      const httpError = createHttpError(
-        error.statusCode,
-        `[Error retrieving users] - [index - GET]: ${error.message}`
-      );
-      next(httpError);
+      next(error);
     }
   }),
 
   create: catchAsync(async (req, res, next) => {
     try {
       let { firstName, lastName, email, password } = req.body;
-
       password = bcrypt.hashSync(password, 10);
-
       const [response, created] = await User.findOrCreate({
         where: {
           email,
@@ -65,21 +54,14 @@ module.exports = {
           password,
         },
       });
-
-      if (!created)
-        return res.status(400).json({ message: 'user or email already exist' });
-
+      if (!created) throw new ErrorObject('user or email already exist', 400);
       endpointResponse({
         res,
         message: 'success',
         body: response,
       });
     } catch (error) {
-      const httpError = createHttpError(
-        error.statusCode,
-        `[Error retrieving users] - [index - GET]: ${error.message}`
-      );
-      next(httpError);
+      next(error);
     }
   }),
 
@@ -96,14 +78,10 @@ module.exports = {
           body: response,
         });
       } else {
-        res.status(400).json({ message: 'id not found ' });
+        throw new ErrorObject('id not found ', 400);
       }
     } catch (error) {
-      const httpError = createHttpError(
-        error.statusCode,
-        `[Error deleting users] - [index - DELETE]: ${error.message}`
-      );
-      next(httpError);
+      next(error);
     }
   }),
 
@@ -124,14 +102,10 @@ module.exports = {
           body: response,
         });
       } else {
-        res.status(400).json({ message: 'id not found or nothing to change ' });
+        throw new ErrorObject('id not found or nothing to change', 400);
       }
     } catch (error) {
-      const httpError = createHttpError(
-        error.statusCode,
-        `[Error updating users] - [index - GET]: ${error.message}`
-      );
-      next(httpError);
+      next(error);
     }
   }),
 };
