@@ -40,11 +40,7 @@ module.exports = {
         body: response,
       });
     } catch (error) {
-      const httpError = createHttpError(
-        error.statusCode,
-        `[Error retrieving users] - [index - GET]: ${error.message}`
-      );
-      next(httpError);
+      next(error);
     }
   }),
 
