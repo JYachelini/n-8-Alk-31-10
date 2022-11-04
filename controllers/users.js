@@ -52,8 +52,6 @@ module.exports = {
     try {
       let { firstName, lastName, email, password } = req.body;
       password = await bcrypt.hashData(password, 10);
-      console.log(password);
-
       const [response, created] = await User.findOrCreate({
         where: {
           email,
