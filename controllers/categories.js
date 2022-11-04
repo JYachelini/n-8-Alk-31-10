@@ -52,38 +52,3 @@ module.exports = {
     }
   }),
 };
-
-/*
-create: catchAsync(async (req, res, next) => {
-    try {
-      let { firstName, lastName, email, password } = req.body;
-      password = await bcrypt.hashData(password, 10);
-      const [response, created] = await User.findOrCreate({
-        where: {
-          email,
-        },
-        defaults: {
-          firstName,
-          lastName,
-          email,
-          password,
-        },
-      });
-
-      if (!created)
-        return res.status(400).json({ message: 'user or email already exist' });
-
-      endpointResponse({
-        res,
-        message: 'success',
-        body: response,
-      });
-    } catch (error) {
-      const httpError = createHttpError(
-        error.statusCode,
-        `[Error retrieving users] - [index - GET]: ${error.message}`
-      );
-      next(httpError);
-    }
-  }),
- */
