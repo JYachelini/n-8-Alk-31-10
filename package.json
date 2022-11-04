@@ -13,7 +13,9 @@
     "start": "node app.js",
     "test": "mocha ./test/*.js",
     "dev": "nodemon app.js",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "seed": "sequelize-cli db:seed:all",
+    "migrate": "sequelize-cli db:migrate"
   },
   "engines": {
     "node": ">=0.14"

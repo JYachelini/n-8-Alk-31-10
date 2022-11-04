@@ -1,5 +1,4 @@
 const { checkSchema, validationResult } = require('express-validator');
-// const createHttpError = require("http-errors");
 
 module.exports = {
   validator: (schema) => {
