@@ -29,11 +29,11 @@ app.use((req, res, next) => {
 
 // error handler
 
-app.use((err, req, res,next) => {
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
   const status = err.statusCode || 500;
   const message = err.message || err;
-  console.error(err);
-  res.status(status).json({mesagge});
+  res.status(status).json({ message });
 });
 
 sequelize
