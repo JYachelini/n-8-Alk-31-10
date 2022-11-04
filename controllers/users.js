@@ -43,6 +43,7 @@ module.exports = {
           password,
         },
       });
+
       if (!created)
         return res.status(400).json({ message: 'user or email already exist' });
 

@@ -12,9 +12,9 @@ const endpointResponse = ({
     message,
     body,
     options,
-  })
-}
+  });
+};
 
 module.exports = {
   endpointResponse,
-}
+};
