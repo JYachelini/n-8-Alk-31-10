@@ -7,7 +7,7 @@ const authRouter = require('./auth');
 const router = Router();
 
 router.use('/users', usersRouter);
-router.use('./transactions', transactionsRouter);
+router.use('/transactions', transactionsRouter);
 router.use('/categories', categoriesRouter);
 router.use('/auth', authRouter);
 
