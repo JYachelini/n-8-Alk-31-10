@@ -16,6 +16,7 @@ module.exports = {
       next(error);
     }
   }),
+
   getById: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -31,7 +32,8 @@ module.exports = {
       next(error);
     }
   }),
-  create: catchAsync(async (req, res, next) => {
+  
+    create: catchAsync(async (req, res, next) => {
     try {
       const { user, category, amount, date } = req.body;
 
@@ -50,4 +52,24 @@ module.exports = {
       next(error);
     }
   }),
+
+  remove: catchAsync(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+
+      const response = await Transaction.destroy({
+        where: {
+          id,
+        },
+      });
+      endpointResponse({
+        res,
+        message: 'Transactions retrieved successfully',
+        body: response,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }),
+
 };
