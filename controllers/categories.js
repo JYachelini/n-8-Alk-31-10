@@ -49,4 +49,28 @@ module.exports = {
       next(error);
     }
   }),
+  update: catchAsync(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { name, description } = req.body;
+
+      const response = await Category.findByPk(id);
+
+      if (!response) {
+        throw new ErrorObject('ID not found', 409);
+      } else {
+        if (name) await response.update({ name });
+        if (description) await response.update({ description });
+
+        await response.save();
+
+        endpointResponse({
+          res,
+          message: response,
+        });
+      }
+    } catch (error) {
+      next(error);
+    }
+  }),
 };
