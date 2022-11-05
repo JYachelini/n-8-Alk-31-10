@@ -58,10 +58,7 @@ module.exports = {
 
       if (!response) throw new ErrorObject('ID not found', 409);
 
-      if (name) await response.update({ name });
-      if (description) await response.update({ description });
-
-      await response.save();
+      await response.update({ name, description });
 
       endpointResponse({
         res,
