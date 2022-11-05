@@ -31,4 +31,23 @@ module.exports = {
       next(error);
     }
   }),
+  create: catchAsync(async (req, res, next) => {
+    try {
+      const { user, category, amount, date } = req.body;
+
+      const response = await Transaction.create({
+        user,
+        category,
+        amount,
+        date,
+      });
+      endpointResponse({
+        res,
+        message: 'Transactions retrieved successfully',
+        body: response,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }),
 };
