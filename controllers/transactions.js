@@ -32,14 +32,14 @@ module.exports = {
       next(error);
     }
   }),
-  
-    create: catchAsync(async (req, res, next) => {
+
+  create: catchAsync(async (req, res, next) => {
     try {
       const { user, category, amount, date } = req.body;
 
       const response = await Transaction.create({
-        user,
-        category,
+        userId: user,
+        categoryId: category,
         amount,
         date,
       });
@@ -71,5 +71,4 @@ module.exports = {
       next(error);
     }
   }),
-
 };
