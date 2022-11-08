@@ -67,6 +67,38 @@ module.exports = {
     }
   }),
 
+  update: catchAsync(async (req, res, next) => {
+    try {
+      const { user, category, amount, date } = req.body;
+      const { id } = req.params;
+      const response = await Transaction.update(
+        {
+          userId: user,
+          categoryId: category,
+          amount,
+          date,
+        },
+        {
+          where: { id },
+        }
+      );
+      if (!response[0] == 0) {
+        endpointResponse({
+          res,
+          message: 'Transactions retrieved successfully',
+          body: response,
+        });
+      } else {
+        throw new ErrorObject(
+          'Transactions not found or nothing to change',
+          400
+        );
+      }
+    } catch (error) {
+      next(error);
+    }
+  }),
+
   remove: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;
