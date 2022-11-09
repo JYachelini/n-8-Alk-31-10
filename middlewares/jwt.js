@@ -1,16 +1,10 @@
 const jwt = require('jsonwebtoken');
+const { secret } = require('../config/config');
 
-const encode = async (user) => {
-  return jwt.sign(
-    {
-      _id: user.id,
-      role: user.role,
-    },
-    process.env.SECRET,
-    {
-      expiresIn: '2h',
-    }
-  );
+const encode = async (payload, expiresIn) => {
+  return jwt.sign(payload, secret, {
+    expiresIn,
+  });
 };
 
 const decode = async (token) => {
@@ -19,7 +13,7 @@ const decode = async (token) => {
 
 const verify = async (token) => {
   try {
-    return jwt.verify(token, process.env.SECRET);
+    return jwt.verify(token, secret);
   } catch (err) {
     return null;
   }

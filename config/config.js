@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config();
 
 module.exports = {
   development: {
@@ -8,7 +8,6 @@ module.exports = {
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     dialect: 'mysql',
-    secret:process.env.SECRET,
   },
 
   production: {
@@ -18,6 +17,7 @@ module.exports = {
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     dialect: 'mysql',
-    secret:process.env.SECRET,
   },
-}
+
+  secret: process.env.SECRET,
+};
