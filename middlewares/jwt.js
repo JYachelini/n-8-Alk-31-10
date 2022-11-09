@@ -1,4 +1,4 @@
-const { jwt } = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const { secret } = require('../config/config');
 
 const encode = (payload) => {
