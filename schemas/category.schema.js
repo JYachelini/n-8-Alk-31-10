@@ -1,5 +1,5 @@
 module.exports = {
-  categoryCreate: {
+  create: {
     name: {
       exists: {
         errorMessage: 'name is required',

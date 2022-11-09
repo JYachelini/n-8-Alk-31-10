@@ -1,10 +1,12 @@
 const { User } = require('../database/models');
-const { endpointResponse } = require('../helpers/success');
-const { catchAsync } = require('../helpers/catchAsync');
 const bcrypt = require('../utils/bcrypt.util');
-const { ErrorObject } = require('../helpers/error');
 const { jwt } = require('../middlewares');
-const { paginationUrls } = require('../helpers/pagination');
+const {
+  paginationUrls,
+  ErrorObject,
+  catchAsync,
+  endpointResponse,
+} = require('../helpers');
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {

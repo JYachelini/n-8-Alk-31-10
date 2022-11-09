@@ -1,7 +1,5 @@
 const { Category } = require('../database/models');
-const { endpointResponse } = require('../helpers/success');
-const { catchAsync } = require('../helpers/catchAsync');
-const { ErrorObject } = require('../helpers/error');
+const { ErrorObject, catchAsync, endpointResponse } = require('../helpers');
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
