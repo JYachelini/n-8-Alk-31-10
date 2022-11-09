@@ -5,6 +5,7 @@ const bcrypt = require('../utils/bcrypt.util');
 const { ErrorObject } = require('../helpers/error');
 const { jwt } = require('../middlewares');
 const { paginationUrls } = require('../helpers/pagination');
+const { userService } = require('../services');
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
@@ -12,11 +13,8 @@ module.exports = {
     try {
       const { page = 0 } = req.query;
       const size = 10;
-      const response = await User.findAll({
-        attributes: ['firstName', 'lastName', 'email', 'createdAt'],
-        limit: size,
-        offset: page * size,
-      });
+      const attributes = ['firstName', 'lastName', 'email', 'createdAt'];
+      const response = await userService.list(attributes, page, size);
       const tokens = response.map((user) => jwt.encode(user.dataValues));
 
       const pagesUrl = await paginationUrls(User, page);
