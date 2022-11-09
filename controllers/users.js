@@ -18,7 +18,6 @@ module.exports = {
         offset: page * size,
       });
       const tokens = response.map((user) => jwt.encode(user.dataValues));
-
       const pagesUrl = await paginationUrls(User, page);
 
       endpointResponse({
