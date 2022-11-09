@@ -1,10 +1,10 @@
 const express = require('express');
 const { transactionController } = require('../controllers');
-const { validator } = require('../middlewares');
+const { validator, ownership } = require('../middlewares');
 const { transactionSchema } = require('../schemas');
 const router = express.Router();
 
-router.get('/', transactionController.get);
+router.get('/', ownership, transactionController.get);
 router.delete('/:id', transactionController.remove);
 router.get('/:id', transactionController.getById);
 router.put(

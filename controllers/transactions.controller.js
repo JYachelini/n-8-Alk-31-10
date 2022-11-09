@@ -28,11 +28,13 @@ module.exports = {
         });
 
       const tokens = response.map((element) => jwt.encode(element));
-      const pagesUrls = await paginationUrls(Transaction, page);
+      const pagesUrls = await paginationUrls(Transaction, page, {
+        userId: query,
+      });
       endpointResponse({
         res,
         message: 'Transactions retrieved successfully',
-        body: { pagesUrls, tokens },
+        body: { pagesUrls, transactions: [...tokens] },
       });
     } catch (error) {
       next(error);

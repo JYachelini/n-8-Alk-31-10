@@ -7,7 +7,7 @@ const { validator, ownership } = require('../middlewares');
 
 const router = express.Router();
 
-router.get('/', userController.get);
+router.get('/', ownership, userController.get);
 router.post('/', validator(userSchema.create), userController.create);
 router.get(
   '/:id',
