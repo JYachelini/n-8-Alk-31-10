@@ -6,11 +6,11 @@ const {
   update,
   remove,
 } = require('../controllers/transactions');
-const { validator } = require('../middlewares/validator');
+const { validator, ownership } = require('../middlewares');
 const { transactionsCreate } = require('../schemas/transactionsCreateSchema');
 const router = express.Router();
 
-router.get('/', get);
+router.get('/', ownership, get);
 router.delete('/:id', remove);
 router.get('/:id', getById);
 router.put('/:id', validator(transactionsCreate), update);
