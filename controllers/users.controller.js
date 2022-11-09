@@ -34,7 +34,11 @@ module.exports = {
   getById: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;
+<<<<<<< HEAD
       const response = await userService.findById(id);
+=======
+      const response = await userService.find(id);
+>>>>>>> 36aaa1c (<config> (service) Adding user service)
       if (!response) throw new ErrorObject('User not found', 404);
       const token = jwt.encode(response);
 
@@ -47,6 +51,30 @@ module.exports = {
       next(error);
     }
   }),
+<<<<<<< HEAD
+=======
+
+  create: catchAsync(async (req, res, next) => {
+    try {
+      let { firstName, lastName, email, password } = req.body;
+      password = await bcrypt.hashData(password, 10);
+      const user = { firstName, lastName, email, password };
+
+      const [response, created] = await userService.create(user);
+      if (!created) throw new ErrorObject('User or email already exist.', 400);
+      const token = jwt.encode(response.dataValues);
+
+      endpointResponse({
+        res,
+        message: 'Success.',
+        body: token,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }),
+
+>>>>>>> 36aaa1c (<config> (service) Adding user service)
   remove: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;
