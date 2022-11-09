@@ -24,6 +24,7 @@ router.delete(
 router.put(
   '/:id',
   validator(paramSchema.validatorId),
+  validator(userSchema.create),
   ownership,
   userController.update
 );

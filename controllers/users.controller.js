@@ -17,6 +17,7 @@ module.exports = {
       const size = 10;
       const attributes = ['firstName', 'lastName', 'email', 'createdAt'];
       const response = await userService.list(attributes, page, size);
+      if (!response) throw new ErrorObject('Error searching users', 500);
       const tokens = response.map((user) => jwt.encode(user.dataValues));
 
       const pagesUrl = await paginationUrls(User, page);
@@ -37,10 +38,8 @@ module.exports = {
   getById: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;
-      const response = await User.findByPk(id, { raw: true });
-
+      const response = await userService.find(id);
       if (!response) throw new ErrorObject('User not found', 404);
-      delete response.password;
       const token = jwt.encode(response);
 
       endpointResponse({
@@ -56,24 +55,13 @@ module.exports = {
   create: catchAsync(async (req, res, next) => {
     try {
       let { firstName, lastName, email, password } = req.body;
-
       password = await bcrypt.hashData(password, 10);
+      const user = { firstName, lastName, email, password };
 
-      const [response, created] = await User.findOrCreate({
-        where: {
-          email,
-        },
-        defaults: {
-          firstName,
-          lastName,
-          email,
-          password,
-        },
-      });
-      delete response.dataValues.password;
+      const [response, created] = await userService.create(user);
+      if (!created) throw new ErrorObject('User or email already exist.', 400);
       const token = jwt.encode(response.dataValues);
 
-      if (!created) throw new ErrorObject('User or email already exist.', 400);
       endpointResponse({
         res,
         message: 'Success.',
@@ -87,9 +75,7 @@ module.exports = {
   remove: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;
-      const response = await User.destroy({
-        where: { id },
-      });
+      const response = await userService.remove(id);
       if (response) {
         endpointResponse({
           res,
@@ -107,14 +93,10 @@ module.exports = {
   update: catchAsync(async (req, res, next) => {
     try {
       let { firstName, lastName, email, password } = req.body;
-      password = await bcrypt.hashData(password);
       const { id } = req.params;
-      const response = await User.update(
-        { firstName, lastName, email, password },
-        {
-          where: { id },
-        }
-      );
+      password = await bcrypt.hashData(password);
+      const data = { firstName, lastName, email, password };
+      const response = await userService.update(data, id);
       if (!response[0] == 0) {
         endpointResponse({
           res,
