@@ -2,7 +2,7 @@ const { Transaction } = require('../database/models');
 const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
 const { ErrorObject } = require('../helpers/error');
-
+const { paginationUrls } = require('../helpers/pagination')
 module.exports = {
   get: catchAsync(async (req, res, next) => {
     try {
@@ -22,6 +22,7 @@ module.exports = {
         });
       }
 
+      const pagesUrls = await paginationUrls(Transaction,page)
       const response = await Transaction.findAll({
         limit: size,
         offset: page * size,
@@ -30,7 +31,10 @@ module.exports = {
       endpointResponse({
         res,
         message: 'Transactions retrieved successfully',
-        body: response,
+        body: {
+          pagesUrls,
+          response,
+        },
       });
     } catch (error) {
       next(error);
