@@ -1,5 +1,5 @@
 module.exports = {
-  transactionsCreate: {
+  create: {
     user: {
       exists: {
         errorMessage: 'user is required',
