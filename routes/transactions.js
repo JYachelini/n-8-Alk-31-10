@@ -6,8 +6,7 @@ const {
   update,
   remove,
 } = require('../controllers/transactions');
-const { validator } = require('../middlewares/validator');
-const { ownership } = require('../middlewares/ownership');
+const { validator, ownership } = require('../middlewares');
 const { transactionsCreate } = require('../schemas/transactionsCreateSchema');
 const router = express.Router();
 
