@@ -56,6 +56,7 @@ module.exports = {
 
   create: catchAsync(async (req, res, next) => {
     try {
+      console.log(req.file);
       let { firstName, lastName, email, password } = req.body;
 
       password = await bcrypt.hashData(password, 10);
