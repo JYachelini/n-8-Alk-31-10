@@ -6,7 +6,7 @@ const {
   update,
   remove,
 } = require('../controllers/transactions');
-const { validator } = require('../middlewares/validator');
+const { validator } = require('../middlewares');
 const { transactionsCreate } = require('../schemas/transactionsCreateSchema');
 const router = express.Router();
 

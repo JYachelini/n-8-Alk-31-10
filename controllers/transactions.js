@@ -15,6 +15,7 @@ module.exports = {
           raw: true,
         });
       else response = await Transaction.findAll({ raw: true });
+
       const tokens = response.map((element) => jwt.encode(element));
       endpointResponse({
         res,
@@ -30,9 +31,9 @@ module.exports = {
     try {
       const { id } = req.params;
       const response = await Transaction.findByPk(id, { raw: true });
-      const token = jwt.encode(response);
 
       if (!response) throw new ErrorObject('Transaction not found', 404);
+      const token = jwt.encode(response);
       endpointResponse({
         res,
         message: 'Transaction retrieved successfully',
