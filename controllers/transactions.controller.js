@@ -1,8 +1,10 @@
 const { Transaction } = require('../database/models');
-const { endpointResponse } = require('../helpers/success');
-const { catchAsync } = require('../helpers/catchAsync');
-const { ErrorObject } = require('../helpers/error');
-const { paginationUrls } = require('../helpers/pagination');
+const {
+  paginationUrls,
+  ErrorObject,
+  catchAsync,
+  endpointResponse,
+} = require('../helpers');
 const { jwt } = require('../middlewares');
 
 module.exports = {
