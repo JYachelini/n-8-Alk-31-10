@@ -1,6 +1,4 @@
-require('dotenv').config();
-const HOST = process.env.HOST;
-const PORT = process.env.PORT || 3000;
+const { development, production } = require('../config/config');
 
 const paginationUrls = async (Model, page) => {
   const route = `${Model.name}s`.toLocaleLowerCase();
@@ -10,9 +8,16 @@ const paginationUrls = async (Model, page) => {
     count: count,
     next:
       count - 10 > page * size
-        ? `${HOST}:${PORT}/${route}?page=${Number(page) + 1}`
+        ? `${development.url || production.url}/${route}?page=${
+            Number(page) + 1
+          }`
         : null,
-    prev: page > 0 ? `${HOST}:${PORT}/${route}?page=${Number(page) - 1}` : null,
+    prev:
+      page > 0
+        ? `${development.url || production.url}/${route}?page=${
+            Number(page) - 1
+          }`
+        : null,
   };
 };
 
