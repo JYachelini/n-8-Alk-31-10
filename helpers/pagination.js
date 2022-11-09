@@ -1,4 +1,4 @@
-const { development, production } = require('../config/config');
+const { url } = require('../config/config');
 
 const paginationUrls = async (Model, page) => {
   const route = `${Model.name}s`.toLocaleLowerCase();
@@ -8,13 +8,13 @@ const paginationUrls = async (Model, page) => {
     count: count,
     next:
       count - 10 > page * size
-        ? `${development.url || production.url}/${route}?page=${
+        ? `${url}/${route}?page=${
             Number(page) + 1
           }`
         : null,
     prev:
       page > 0
-        ? `${development.url || production.url}/${route}?page=${
+        ? `${url}/${route}?page=${
             Number(page) - 1
           }`
         : null,
