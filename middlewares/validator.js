@@ -8,10 +8,10 @@ module.exports = {
       (req, res, next) => {
         try {
           const errors = validationResult(req);
-        if (!errors.isEmpty())  throw new ErrorObject(errors.mapped(),400);
-        next();
-        } catch(error){
-          next(error)
+          if (!errors.isEmpty()) throw new ErrorObject(errors.mapped(), 400);
+          next();
+        } catch (error) {
+          next(error);
         }
       },
     ];

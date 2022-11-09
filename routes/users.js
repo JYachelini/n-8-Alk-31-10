@@ -10,7 +10,7 @@ const {
 
 const { userCreate } = require('../schemas/userCreateSchema');
 const { validatorId } = require('../schemas/userValidationId');
-const { validator } = require('../middlewares/validator');
+const { validator } = require('../middlewares');
 
 const router = express.Router();
 

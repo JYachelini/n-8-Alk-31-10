@@ -2,29 +2,24 @@ const { Transaction } = require('../database/models');
 const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
 const { ErrorObject } = require('../helpers/error');
+const { jwt } = require('../middlewares');
 
 module.exports = {
   get: catchAsync(async (req, res, next) => {
     try {
       const { query } = req.query;
-      if (query) {
-        const response = await Transaction.findAll({
-          where: {
-            userId: query,
-          },
+      let response;
+      if (query)
+        response = await Transaction.findAll({
+          where: { userId: query },
+          raw: true,
         });
-        endpointResponse({
-          res,
-          message: 'Transactions retrieved successfully',
-          body: response,
-        });
-      }
-
-      const response = await Transaction.findAll();
+      else response = await Transaction.findAll({ raw: true });
+      const tokens = response.map((element) => jwt.encode(element));
       endpointResponse({
         res,
         message: 'Transactions retrieved successfully',
-        body: response,
+        body: tokens,
       });
     } catch (error) {
       next(error);
@@ -34,13 +29,14 @@ module.exports = {
   getById: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;
-      const response = await Transaction.findByPk(id);
+      const response = await Transaction.findByPk(id, { raw: true });
+      const token = jwt.encode(response);
 
       if (!response) throw new ErrorObject('Transaction not found', 404);
       endpointResponse({
         res,
         message: 'Transaction retrieved successfully',
-        body: response,
+        body: token,
       });
     } catch (error) {
       next(error);
@@ -57,10 +53,11 @@ module.exports = {
         amount,
         date,
       });
+      const token = jwt.encode(response.dataValues);
       endpointResponse({
         res,
         message: 'Transactions retrieved successfully',
-        body: response,
+        body: token,
       });
     } catch (error) {
       next(error);

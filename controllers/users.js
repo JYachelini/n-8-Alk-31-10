@@ -3,6 +3,7 @@ const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
 const bcrypt = require('../utils/bcrypt.util');
 const { ErrorObject } = require('../helpers/error');
+const { jwt } = require('../middlewares');
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
@@ -11,11 +12,12 @@ module.exports = {
       const response = await User.findAll({
         attributes: ['firstName', 'lastName', 'email', 'createdAt'],
       });
+      const tokens = response.map((user) => jwt.encode(user.dataValues));
 
       endpointResponse({
         res,
         message: 'Users retrieved successfully',
-        body: response,
+        body: tokens,
       });
     } catch (error) {
       next(error);
@@ -28,11 +30,13 @@ module.exports = {
       const response = await User.findByPk(id, { raw: true });
 
       if (!response) throw new ErrorObject('User not found', 404);
+      delete response.password;
+      const token = jwt.encode(response);
 
       endpointResponse({
         res,
         message: 'Users retrieved successfully',
-        body: response,
+        body: token,
       });
     } catch (error) {
       next(error);
@@ -56,11 +60,14 @@ module.exports = {
           password,
         },
       });
-      if (!created) throw new ErrorObject('user or email already exist', 400);
+      delete response.dataValues.password;
+      const token = jwt.encode(response.dataValues);
+
+      if (!created) throw new ErrorObject('User or email already exist.', 400);
       endpointResponse({
         res,
-        message: 'success',
-        body: response,
+        message: 'Success.',
+        body: token,
       });
     } catch (error) {
       next(error);
@@ -76,7 +83,7 @@ module.exports = {
       if (response) {
         endpointResponse({
           res,
-          message: 'Users deleted successfully',
+          message: 'User deleted successfully',
           body: response,
         });
       } else {
