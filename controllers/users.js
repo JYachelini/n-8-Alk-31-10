@@ -4,20 +4,30 @@ const { catchAsync } = require('../helpers/catchAsync');
 const bcrypt = require('../utils/bcrypt.util');
 const { ErrorObject } = require('../helpers/error');
 const { jwt } = require('../middlewares');
+const { paginationUrls } = require('../helpers/pagination');
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
   get: catchAsync(async (req, res, next) => {
     try {
+      const { page = 0 } = req.query;
+      const size = 10;
       const response = await User.findAll({
         attributes: ['firstName', 'lastName', 'email', 'createdAt'],
+        limit: size,
+        offset: page * size,
       });
       const tokens = response.map((user) => jwt.encode(user.dataValues));
+
+      const pagesUrl = await paginationUrls(User, page);
 
       endpointResponse({
         res,
         message: 'Users retrieved successfully',
-        body: tokens,
+        body: {
+          pagesUrl,
+          tokens,
+        },
       });
     } catch (error) {
       next(error);

@@ -2,25 +2,35 @@ const { Transaction } = require('../database/models');
 const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
 const { ErrorObject } = require('../helpers/error');
+const { paginationUrls } = require('../helpers/pagination');
 const { jwt } = require('../middlewares');
 
 module.exports = {
   get: catchAsync(async (req, res, next) => {
     try {
-      const { query } = req.query;
+      const { query, page = 0 } = req.query;
+      const size = 10;
       let response;
       if (query)
         response = await Transaction.findAll({
           where: { userId: query },
           raw: true,
+          limit: size,
+          offset: page * size,
         });
-      else response = await Transaction.findAll({ raw: true });
+      else
+        response = await Transaction.findAll({
+          raw: true,
+          limit: size,
+          offset: page * size,
+        });
 
       const tokens = response.map((element) => jwt.encode(element));
+      const pagesUrls = await paginationUrls(Transaction, page);
       endpointResponse({
         res,
         message: 'Transactions retrieved successfully',
-        body: tokens,
+        body: { pagesUrls, tokens },
       });
     } catch (error) {
       next(error);
