@@ -21,8 +21,6 @@ module.exports = {
     dialect: 'mysql',
   },
 
-
   secret: process.env.SECRET,
   url: process.env.URL,
-
 };

@@ -3,13 +3,12 @@ const { ErrorObject } = require('../helpers/error');
 
 const ownership = async (req, res, next) => {
   try {
-    const { query } = req.query;
+    const { id } = req.params;
 
     let token = req.headers.authorization.split(' ').pop();
 
-    let tokenDecode = await decode(token);
-
-    if (tokenDecode.id === query || tokenDecode.roleId == 1) {
+    let tokenDecode = decode(token);
+    if (tokenDecode.id == id || tokenDecode.roleId == 1) {
       next();
     } else {
       throw new ErrorObject('query not allowed', 403);

@@ -8,16 +8,9 @@ const paginationUrls = async (Model, page) => {
     count: count,
     next:
       count - 10 > page * size
-        ? `${url}/${route}?page=${
-            Number(page) + 1
-          }`
+        ? `${url}/${route}?page=${Number(page) + 1}`
         : null,
-    prev:
-      page > 0
-        ? `${url}/${route}?page=${
-            Number(page) - 1
-          }`
-        : null,
+    prev: page > 0 ? `${url}/${route}?page=${Number(page) - 1}` : null,
   };
 };
 

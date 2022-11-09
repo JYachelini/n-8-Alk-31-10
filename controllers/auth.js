@@ -3,6 +3,7 @@ const { User } = require('../database/models');
 const bcrypt = require('../utils/bcrypt.util');
 const { endpointResponse } = require('../helpers/success');
 const { ErrorObject } = require('../helpers/error');
+const { jwt } = require('../middlewares');
 
 module.exports = {
   login: catchAsync(async (req, res, next) => {
@@ -19,11 +20,13 @@ module.exports = {
       );
 
       if (!passwordMatchs) throw new ErrorObject({ ok: false }, 401);
+      delete userFound.password;
+      const token = jwt.encode(userFound);
 
       endpointResponse({
         res,
         message: 'Login successfully.',
-        body: userFound,
+        body: token,
       });
     } catch (error) {
       next(error);

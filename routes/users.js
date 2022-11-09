@@ -10,14 +10,14 @@ const {
 
 const { userCreate } = require('../schemas/userCreateSchema');
 const { validatorId } = require('../schemas/userValidationId');
-const { validator } = require('../middlewares/validator');
+const { validator, ownership } = require('../middlewares');
 
 const router = express.Router();
 
 router.get('/', get);
-router.get('/:id', validator(validatorId), getById);
 router.post('/', validator(userCreate), create);
-router.delete('/:id', validator(validatorId), remove);
-router.put('/:id', validator(validatorId), update);
+router.get('/:id', validator(validatorId), ownership, getById);
+router.delete('/:id', validator(validatorId), ownership, remove);
+router.put('/:id', validator(validatorId), ownership, update);
 
 module.exports = router;
