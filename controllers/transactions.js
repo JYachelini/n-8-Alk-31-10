@@ -13,7 +13,7 @@ module.exports = {
             userId: query,
           },
         });
-        endpointResponse({
+        return endpointResponse({
           res,
           message: 'Transactions retrieved successfully',
           body: response,
