@@ -5,10 +5,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 require('dotenv').config();
-
 const indexRouter = require('./routes/index');
 const { sequelize } = require('./database/models/');
-
 const PORT = process.env.PORT || 3000;
 
 const app = express();

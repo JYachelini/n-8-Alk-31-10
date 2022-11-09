@@ -3,19 +3,29 @@ const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
 const bcrypt = require('../utils/bcrypt.util');
 const { ErrorObject } = require('../helpers/error');
+const { paginationUrls } = require('../helpers/pagination');
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
   get: catchAsync(async (req, res, next) => {
     try {
+      const { page = 0 } = req.query;
+      const size = 10;
       const response = await User.findAll({
         attributes: ['firstName', 'lastName', 'email', 'createdAt'],
+        limit: size,
+        offset: page * size,
       });
+
+      const pagesUrl = await paginationUrls(User, page);
 
       endpointResponse({
         res,
         message: 'Users retrieved successfully',
-        body: response,
+        body: {
+          pagesUrl,
+          response,
+        },
       });
     } catch (error) {
       next(error);

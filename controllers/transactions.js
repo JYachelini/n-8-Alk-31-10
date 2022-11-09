@@ -2,17 +2,19 @@ const { Transaction } = require('../database/models');
 const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
 const { ErrorObject } = require('../helpers/error');
-
+const { paginationUrls } = require('../helpers/pagination')
 module.exports = {
   get: catchAsync(async (req, res, next) => {
     try {
-      const { query } = req.query;
+      const { query, page = 0 } = req.query;
+      const size = 10;
       if (query) {
         const response = await Transaction.findAll({
           where: {
             userId: query,
           },
         });
+
         return endpointResponse({
           res,
           message: 'Transactions retrieved successfully',
@@ -20,11 +22,19 @@ module.exports = {
         });
       }
 
-      const response = await Transaction.findAll();
+      const pagesUrls = await paginationUrls(Transaction,page)
+      const response = await Transaction.findAll({
+        limit: size,
+        offset: page * size,
+      });
+
       endpointResponse({
         res,
         message: 'Transactions retrieved successfully',
-        body: response,
+        body: {
+          pagesUrls,
+          response,
+        },
       });
     } catch (error) {
       next(error);
