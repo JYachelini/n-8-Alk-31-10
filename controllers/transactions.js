@@ -6,6 +6,20 @@ const { ErrorObject } = require('../helpers/error');
 module.exports = {
   get: catchAsync(async (req, res, next) => {
     try {
+      const { query } = req.query;
+      if (query) {
+        const response = await Transaction.findAll({
+          where: {
+            userId: query,
+          },
+        });
+        return endpointResponse({
+          res,
+          message: 'Transactions retrieved successfully',
+          body: response,
+        });
+      }
+
       const response = await Transaction.findAll();
       endpointResponse({
         res,
