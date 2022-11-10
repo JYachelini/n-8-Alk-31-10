@@ -66,4 +66,22 @@ module.exports = {
       next(error);
     }
   }),
+  remove: catchAsync(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+
+      const response = await Category.destroy({
+        where: {
+          id,
+        },
+      });
+      endpointResponse({
+        res,
+        message: 'Transactions retrieved successfully',
+        body: response,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }),
 };
