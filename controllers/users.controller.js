@@ -61,7 +61,10 @@ module.exports = {
       let { firstName, lastName, email, password } = req.body;
 
       password = await bcrypt.hashData(password, 10);
-      const avatar = `${url}/uploads/${req.file.filename}`;
+      let avatar = null;
+      if (req.file) {
+        avatar = `${url}/uploads/${req.file.filename}`;
+      }
       const [response, created] = await User.findOrCreate({
         attributes: {
           exclude: ['password'],
