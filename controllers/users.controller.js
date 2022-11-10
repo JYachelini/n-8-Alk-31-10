@@ -1,4 +1,5 @@
 const { User } = require('../database/models');
+const fs = require('fs');
 const bcrypt = require('../utils/bcrypt.util');
 const { jwt } = require('../middlewares');
 const {
@@ -8,6 +9,7 @@ const {
   endpointResponse,
 } = require('../helpers');
 const { userService } = require('../services');
+const { url } = require('../config/config');
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
@@ -27,7 +29,7 @@ module.exports = {
         message: 'Users retrieved successfully',
         body: {
           pagesUrl,
-          tokens,
+          users: [...tokens],
         },
       });
     } catch (error) {
@@ -55,11 +57,25 @@ module.exports = {
   create: catchAsync(async (req, res, next) => {
     try {
       let { firstName, lastName, email, password } = req.body;
+      const file = req.file;
+      let avatar = null;
+      if (file) avatar = `${url}/uploads/${file.filename}`;
       password = await bcrypt.hashData(password, 10);
-      const user = { firstName, lastName, email, password };
+
+      const user = { firstName, lastName, email, password, avatar };
 
       const [response, created] = await userService.create(user);
-      if (!created) throw new ErrorObject('User or email already exist.', 400);
+
+      if (!created) {
+        fs.unlink(req.file.path, (err) => {
+          if (err) {
+            next(new ErrorObject(err, 400));
+          }
+        });
+
+        throw new ErrorObject('User or email already exist.', 400);
+      }
+
       const token = jwt.encode(response.dataValues);
 
       endpointResponse({

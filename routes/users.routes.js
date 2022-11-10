@@ -2,13 +2,12 @@ const express = require('express');
 
 const { userController } = require('../controllers');
 
-const { userSchema, paramSchema } = require('../schemas');
+const { paramSchema, userSchema } = require('../schemas');
 const { validator, ownership } = require('../middlewares');
 
 const router = express.Router();
 
-router.get('/', userController.get);
-router.post('/', validator(userSchema.create), userController.create);
+router.get('/', ownership, userController.get);
 router.get(
   '/:id',
   validator(paramSchema.validatorId),
