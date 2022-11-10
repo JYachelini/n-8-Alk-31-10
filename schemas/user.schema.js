@@ -1,5 +1,5 @@
 module.exports = {
-  userCreate: {
+  create: {
     firstName: {
       exists: {
         errorMessage: 'firstName is required',

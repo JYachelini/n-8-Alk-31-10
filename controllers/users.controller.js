@@ -1,21 +1,34 @@
 const { User } = require('../database/models');
-const { endpointResponse } = require('../helpers/success');
-const { catchAsync } = require('../helpers/catchAsync');
 const bcrypt = require('../utils/bcrypt.util');
-const { ErrorObject } = require('../helpers/error');
+const { jwt } = require('../middlewares');
+const {
+  paginationUrls,
+  ErrorObject,
+  catchAsync,
+  endpointResponse,
+} = require('../helpers');
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
   get: catchAsync(async (req, res, next) => {
     try {
+      const { page = 0 } = req.query;
+      const size = 10;
       const response = await User.findAll({
         attributes: ['firstName', 'lastName', 'email', 'createdAt'],
+        limit: size,
+        offset: page * size,
       });
+      const tokens = response.map((user) => jwt.encode(user.dataValues));
+      const pagesUrl = await paginationUrls(User, page);
 
       endpointResponse({
         res,
         message: 'Users retrieved successfully',
-        body: response,
+        body: {
+          pagesUrl,
+          users: [...tokens],
+        },
       });
     } catch (error) {
       next(error);
@@ -28,11 +41,13 @@ module.exports = {
       const response = await User.findByPk(id, { raw: true });
 
       if (!response) throw new ErrorObject('User not found', 404);
+      delete response.password;
+      const token = jwt.encode(response);
 
       endpointResponse({
         res,
         message: 'Users retrieved successfully',
-        body: response,
+        body: token,
       });
     } catch (error) {
       next(error);
@@ -56,11 +71,14 @@ module.exports = {
           password,
         },
       });
-      if (!created) throw new ErrorObject('user or email already exist', 400);
+      delete response.dataValues.password;
+      const token = jwt.encode(response.dataValues);
+
+      if (!created) throw new ErrorObject('User or email already exist.', 400);
       endpointResponse({
         res,
-        message: 'success',
-        body: response,
+        message: 'Success.',
+        body: token,
       });
     } catch (error) {
       next(error);
@@ -76,7 +94,7 @@ module.exports = {
       if (response) {
         endpointResponse({
           res,
-          message: 'Users deleted successfully',
+          message: 'User deleted successfully',
           body: response,
         });
       } else {

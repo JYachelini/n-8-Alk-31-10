@@ -1,30 +1,40 @@
 const { Transaction } = require('../database/models');
-const { endpointResponse } = require('../helpers/success');
-const { catchAsync } = require('../helpers/catchAsync');
-const { ErrorObject } = require('../helpers/error');
+const {
+  paginationUrls,
+  ErrorObject,
+  catchAsync,
+  endpointResponse,
+} = require('../helpers');
+const { jwt } = require('../middlewares');
 
 module.exports = {
   get: catchAsync(async (req, res, next) => {
     try {
-      const { query } = req.query;
-      if (query) {
-        const response = await Transaction.findAll({
-          where: {
-            userId: query,
-          },
+      const { query, page = 0 } = req.query;
+      const size = 10;
+      let response;
+      if (query)
+        response = await Transaction.findAll({
+          where: { userId: query },
+          raw: true,
+          limit: size,
+          offset: page * size,
         });
-        endpointResponse({
-          res,
-          message: 'Transactions retrieved successfully',
-          body: response,
+      else
+        response = await Transaction.findAll({
+          raw: true,
+          limit: size,
+          offset: page * size,
         });
-      }
 
-      const response = await Transaction.findAll();
+      const tokens = response.map((element) => jwt.encode(element));
+      const pagesUrls = await paginationUrls(Transaction, page, {
+        userId: query,
+      });
       endpointResponse({
         res,
         message: 'Transactions retrieved successfully',
-        body: response,
+        body: { pagesUrls, transactions: [...tokens] },
       });
     } catch (error) {
       next(error);
@@ -34,13 +44,14 @@ module.exports = {
   getById: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;
-      const response = await Transaction.findByPk(id);
+      const response = await Transaction.findByPk(id, { raw: true });
 
       if (!response) throw new ErrorObject('Transaction not found', 404);
+      const token = jwt.encode(response);
       endpointResponse({
         res,
         message: 'Transaction retrieved successfully',
-        body: response,
+        body: token,
       });
     } catch (error) {
       next(error);
@@ -57,10 +68,11 @@ module.exports = {
         amount,
         date,
       });
+      const token = jwt.encode(response.dataValues);
       endpointResponse({
         res,
         message: 'Transactions retrieved successfully',
-        body: response,
+        body: token,
       });
     } catch (error) {
       next(error);
