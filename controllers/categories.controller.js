@@ -75,10 +75,10 @@ module.exports = {
           id,
         },
       });
+      if (!response) throw new ErrorObject('ID not found', 404);
       endpointResponse({
         res,
-        message: 'Transactions retrieved successfully',
-        body: response,
+        code: 204,
       });
     } catch (error) {
       next(error);
