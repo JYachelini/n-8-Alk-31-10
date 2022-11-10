@@ -15,8 +15,8 @@ router.get(
   
 router.post(
   '/',
-  upload.single('avatar'),
   validator(userSchema.create),
+  upload.single('avatar'),
   userController.create
 );
 
