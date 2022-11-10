@@ -1,4 +1,5 @@
 const { checkSchema, validationResult } = require('express-validator');
+const fs = require('fs');
 const { ErrorObject } = require('../helpers/error');
 
 module.exports = {
@@ -8,10 +9,15 @@ module.exports = {
       (req, res, next) => {
         try {
           const errors = validationResult(req);
-        if (!errors.isEmpty())  throw new ErrorObject(errors.mapped(),400);
-        next();
-        } catch(error){
-          next(error)
+          if (!errors.isEmpty()) throw new ErrorObject(errors.mapped(), 400);
+          next();
+        } catch (error) {
+          fs.unlink(req.file.path, (err) => {
+            if (err) {
+              next(new ErrorObject(err, 400));
+            }
+          });
+          next(error);
         }
       },
     ];

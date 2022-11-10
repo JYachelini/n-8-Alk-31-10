@@ -1,5 +1,5 @@
 module.exports = {
-  loginSchema: {
+  login: {
     email: {
       exists: {
         errorMessage: 'Email is required.',
