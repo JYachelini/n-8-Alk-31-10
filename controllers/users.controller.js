@@ -29,7 +29,7 @@ module.exports = {
         message: 'Users retrieved successfully',
         body: {
           pagesUrl,
-          tokens,
+          users: [...tokens],
         },
       });
     } catch (error) {
