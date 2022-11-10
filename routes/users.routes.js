@@ -2,24 +2,12 @@ const express = require('express');
 
 const { userController } = require('../controllers');
 
-const { userSchema, paramSchema } = require('../schemas');
-const { validator, ownership, upload } = require('../middlewares');
+const { paramSchema } = require('../schemas');
+const { validator, ownership } = require('../middlewares');
 
 const router = express.Router();
 
-
-router.get(
-  '/', 
-  ownership, 
-  userController.get);
-  
-router.post(
-  '/',
-  upload.single('avatar'),
-  validator(userSchema.create),
-  userController.create
-);
-
+router.get('/', ownership, userController.get);
 router.get(
   '/:id',
   validator(paramSchema.validatorId),
