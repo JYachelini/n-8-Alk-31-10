@@ -1,4 +1,5 @@
 const { User } = require('../database/models');
+const fs = require('fs');
 const bcrypt = require('../utils/bcrypt.util');
 const { jwt } = require('../middlewares');
 const {
@@ -7,6 +8,7 @@ const {
   catchAsync,
   endpointResponse,
 } = require('../helpers');
+const { url } = require('../config/config');
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
@@ -59,8 +61,11 @@ module.exports = {
       let { firstName, lastName, email, password } = req.body;
 
       password = await bcrypt.hashData(password, 10);
-
+      const avatar = `${url}/uploads/${req.file.filename}`;
       const [response, created] = await User.findOrCreate({
+        attributes: {
+          exclude: ['password'],
+        },
         where: {
           email,
         },
@@ -68,13 +73,23 @@ module.exports = {
           firstName,
           lastName,
           email,
+          avatar,
           password,
         },
       });
-      delete response.dataValues.password;
+
+      if (!created) {
+        fs.unlink(req.file.path, (err) => {
+          if (err) {
+            next(new ErrorObject(err, 400));
+          }
+        });
+
+        throw new ErrorObject('User or email already exist.', 400);
+      }
+
       const token = jwt.encode(response.dataValues);
 
-      if (!created) throw new ErrorObject('User or email already exist.', 400);
       endpointResponse({
         res,
         message: 'Success.',
