@@ -1,9 +1,9 @@
 const { url } = require('../config/config');
 
-const paginationUrls = async (Model, page) => {
+const paginationUrls = async (Model, page, filter) => {
   const route = `${Model.name}s`.toLocaleLowerCase();
   const size = 10;
-  const count = await Model.count();
+  const count = await Model.count({ where: { ...filter } });
   return {
     count: count,
     next:

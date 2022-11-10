@@ -32,6 +32,15 @@ module.exports = {
 async function generateUsers(admin) {
   const users = [];
   const passwordHash = await hashData('12345678');
+  if (admin === 1) {
+    users.push({
+      firstName: 'administrator',
+      lastName: 'administrator',
+      email: 'admin@admin.com',
+      password: passwordHash,
+      roleId: admin,
+    });
+  }
   for (let i = 1; i <= 10; i++) {
     const user = {
       firstName: faker.name.firstName(),
