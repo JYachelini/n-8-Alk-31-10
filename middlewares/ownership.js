@@ -6,9 +6,6 @@ const ownership = async (req, res, next) => {
     const { id } = req.params;
     const { query } = req.query;
 
-    if (!req.headers.authorization) {
-      throw new ErrorObject('You must log in', 403);
-    }
 
     let token = req.headers.authorization.split(' ').pop();
 
