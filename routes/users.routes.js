@@ -7,7 +7,23 @@ const { validator, ownership } = require('../middlewares');
 
 const router = express.Router();
 
+<<<<<<< HEAD
 router.get('/', ownership, userController.get);
+=======
+
+router.get(
+  '/', 
+  ownership, 
+  userController.get);
+  
+router.post(
+  '/',
+  validator(userSchema.create),
+  upload.single('avatar'),
+  userController.create
+);
+
+>>>>>>> ad9833b (a)
 router.get(
   '/:id',
   validator(paramSchema.validatorId),
