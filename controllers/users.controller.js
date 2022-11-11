@@ -19,7 +19,7 @@ module.exports = {
       const size = 10;
       const attributes = ['firstName', 'lastName', 'email', 'createdAt'];
       const response = await userService.list(attributes, page, size);
-      if (!response) throw new ErrorObject('Error searching users', 500);
+      if (!response) throw new ErrorObject('Error searching users', 204);
       const tokens = response.map((user) => jwt.encode(user.dataValues));
 
       const pagesUrl = await paginationUrls(User, page);
@@ -41,7 +41,7 @@ module.exports = {
     try {
       const { id } = req.params;
       const response = await userService.find(id);
-      if (!response) throw new ErrorObject('User not found', 404);
+      if (!response) throw new ErrorObject('User not found', 204);
       const token = jwt.encode(response);
 
       endpointResponse({
@@ -73,12 +73,13 @@ module.exports = {
           }
         });
 
-        throw new ErrorObject('User or email already exist.', 400);
+        throw new ErrorObject('User or email already exist.', 409);
       }
 
       const token = jwt.encode(response.dataValues);
 
       endpointResponse({
+        code: 201,
         res,
         message: 'Success.',
         body: token,
@@ -99,7 +100,7 @@ module.exports = {
           body: response,
         });
       } else {
-        throw new ErrorObject('id not found ', 400);
+        throw new ErrorObject('id not found ', 422);
       }
     } catch (error) {
       next(error);
@@ -120,7 +121,7 @@ module.exports = {
           body: response,
         });
       } else {
-        throw new ErrorObject('id not found or nothing to change', 400);
+        throw new ErrorObject('id not found or nothing to change', 422);
       }
     } catch (error) {
       next(error);

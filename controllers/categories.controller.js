@@ -20,7 +20,7 @@ module.exports = {
       const { id } = req.params;
       const response = await Category.findByPk(id);
 
-      if (!response) throw new ErrorObject('Category not found', 404);
+      if (!response) throw new ErrorObject('Category not found', 204);
       endpointResponse({
         res,
         message: 'Category retrieved successfully',
@@ -54,11 +54,12 @@ module.exports = {
 
       const response = await Category.findByPk(id);
 
-      if (!response) throw new ErrorObject('ID not found', 409);
+      if (!response) throw new ErrorObject('ID not found', 422);
 
       await response.update({ name, description });
 
       endpointResponse({
+        code: 201,
         res,
         message: response,
       });
@@ -75,7 +76,7 @@ module.exports = {
           id,
         },
       });
-      if (!response) throw new ErrorObject('ID not found', 404);
+      if (!response) throw new ErrorObject('ID not found', 422);
       endpointResponse({
         res,
         message: 'Category was deleted successfully',
