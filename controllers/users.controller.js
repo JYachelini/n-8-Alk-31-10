@@ -100,7 +100,7 @@ module.exports = {
           body: response,
         });
       } else {
-        throw new ErrorObject('id not found ', 422);
+        throw new ErrorObject('id not found ', 404);
       }
     } catch (error) {
       next(error);
