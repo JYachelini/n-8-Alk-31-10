@@ -76,7 +76,7 @@ module.exports = {
           id,
         },
       });
-      if (!response) throw new ErrorObject('ID not found', 422);
+      if (!response) throw new ErrorObject('ID not found', 404);
       endpointResponse({
         res,
         message: 'Category was deleted successfully',
