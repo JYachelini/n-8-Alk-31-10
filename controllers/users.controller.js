@@ -41,7 +41,7 @@ module.exports = {
     try {
       const { id } = req.params;
       const response = await userService.find(id);
-      if (!response) throw new ErrorObject('User not found', 204);
+      if (!response) throw new ErrorObject('User not found', 404);
       const token = jwt.encode(response);
 
       endpointResponse({

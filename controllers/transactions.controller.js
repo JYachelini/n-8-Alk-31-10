@@ -56,7 +56,7 @@ module.exports = {
       const { id } = req.params;
       const response = await Transaction.findByPk(id, { raw: true });
 
-      if (!response) throw new ErrorObject('Transaction not found', 204);
+      if (!response) throw new ErrorObject('Transaction not found', 404);
       const token = jwt.encode(response);
       endpointResponse({
         res,
