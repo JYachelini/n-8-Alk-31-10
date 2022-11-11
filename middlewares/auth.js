@@ -23,10 +23,9 @@ const ownershipUser = async (req, res, next) => {
     const { id } = req.params;
     const user = req.user;
 
-    if (isAdmin(user.roleId) || user.id != id)
-      throw new ErrorObject('not allowed', 403);
+    if (canPass(user, id)) return next();
 
-    return next();
+    throw new ErrorObject('not allowed', 403);
   } catch (error) {
     return next(error);
   }
@@ -37,12 +36,17 @@ const ownershipTransaction = async (req, res, next) => {
     const { id } = req.params;
     const { userId } = await transactionService.getById(id);
     const user = req.user;
-    if (isAdmin(user.roleId) || user.id == userId) return next();
+
+    if (canPass(user, userId)) return next();
 
     throw new ErrorObject('not allowed', 403);
   } catch (error) {
     return next(error);
   }
+};
+
+const canPass = (user, id) => {
+  return isAdmin(user.roleId) || user.id == id;
 };
 
 const isAdmin = (roleId) => {
