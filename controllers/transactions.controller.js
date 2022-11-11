@@ -6,6 +6,7 @@ const {
   endpointResponse,
 } = require('../helpers');
 const { jwt } = require('../middlewares');
+const { isAdmin } = require('../middlewares/auth');
 
 module.exports = {
   get: catchAsync(async (req, res, next) => {
@@ -13,24 +14,33 @@ module.exports = {
       const { query, page = 0 } = req.query;
       const size = 10;
       let response;
-      if (query)
+      let pagesUrls;
+      const user = req.user;
+      if (!isAdmin(user.roleId) && user.id != query) {
+        throw new ErrorObject('Not allowed.', 403);
+      }
+
+      if (query) {
         response = await Transaction.findAll({
           where: { userId: query },
           raw: true,
           limit: size,
           offset: page * size,
         });
-      else
+        pagesUrls = await paginationUrls(Transaction, page, {
+          userId: query,
+        });
+      } else {
         response = await Transaction.findAll({
           raw: true,
           limit: size,
           offset: page * size,
         });
+        pagesUrls = await paginationUrls(Transaction, page, {});
+      }
 
       const tokens = response.map((element) => jwt.encode(element));
-      const pagesUrls = await paginationUrls(Transaction, page, {
-        userId: query,
-      });
+
       endpointResponse({
         res,
         message: 'Transactions retrieved successfully',
@@ -60,10 +70,10 @@ module.exports = {
 
   create: catchAsync(async (req, res, next) => {
     try {
-      const { user, category, amount, date } = req.body;
-
+      const { category, amount, date } = req.body;
+      const user = req.user;
       const response = await Transaction.create({
-        userId: user,
+        userId: user.id,
         categoryId: category,
         amount,
         date,

@@ -1,11 +1,13 @@
-const jwt = require('./jwt');
 const upload = require('./multer');
 const { validator } = require('./validator');
-const { ownership } = require('./ownership');
+const { checkAuth, ownershipUser, ownershipTransaction } = require('./auth');
+const jwt = require('./jwt');
 
 module.exports = {
-  jwt,
   upload,
   validator,
-  ownership,
+  checkAuth,
+  ownershipTransaction,
+  ownershipUser,
+  jwt,
 };
