@@ -36,7 +36,6 @@ const ownershipTransaction = async (req, res, next) => {
     const { id } = req.params;
     const { userId } = await transactionService.getById(id);
     const user = req.user;
-
     if (canPass(user, userId)) return next();
 
     throw new ErrorObject('not allowed', 403);
