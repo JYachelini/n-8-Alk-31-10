@@ -1,22 +1,47 @@
 const express = require('express');
 const { transactionController } = require('../controllers');
-const { validator, ownership } = require('../middlewares');
+const {
+  validator,
+  checkAuth,
+  ownershipTransaction,
+} = require('../middlewares');
 const { transactionSchema } = require('../schemas');
 const router = express.Router();
 
-router.get('/', ownership, transactionController.get);
-router.delete('/:id', ownership, transactionController.remove);
-router.get('/:id', ownership, transactionController.getById);
-router.put(
-  '/:id',
-  validator(transactionSchema.create),
-  ownership,
-  transactionController.update
-);
+// Create transaction
 router.post(
   '/',
   validator(transactionSchema.create),
+  checkAuth,
   transactionController.create
+);
+
+// Get transactions
+router.get('/', checkAuth, transactionController.get);
+
+// Get transaction
+router.get(
+  '/:id',
+  checkAuth,
+  ownershipTransaction,
+  transactionController.getById
+);
+
+// Update transaction
+router.put(
+  '/:id',
+  validator(transactionSchema.create),
+  checkAuth,
+  ownershipTransaction,
+  transactionController.update
+);
+
+// Delete transaction
+router.delete(
+  '/:id',
+  checkAuth,
+  ownershipTransaction,
+  transactionController.remove
 );
 
 module.exports = router;

@@ -1,13 +1,5 @@
 module.exports = {
   create: {
-    user: {
-      exists: {
-        errorMessage: 'user is required',
-      },
-      isInt: {
-        errorMessage: 'id must be a number',
-      },
-    },
     category: {
       exists: {
         errorMessage: 'category is required',
