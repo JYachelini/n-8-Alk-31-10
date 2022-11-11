@@ -20,7 +20,7 @@ module.exports = {
       const { id } = req.params;
       const response = await Category.findByPk(id);
 
-      if (!response) throw new ErrorObject('Category not found', 204);
+      if (!response) throw new ErrorObject('Category not found', 404);
       endpointResponse({
         res,
         message: 'Category retrieved successfully',
