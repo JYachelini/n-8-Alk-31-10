@@ -73,12 +73,13 @@ module.exports = {
           }
         });
 
-        throw new ErrorObject('User or email already exist.', 400);
+        throw new ErrorObject('User or email already exist.', 409);
       }
 
       const token = jwt.encode(response.dataValues);
 
       endpointResponse({
+        code: 201,
         res,
         message: 'Success.',
         body: token,
@@ -99,7 +100,7 @@ module.exports = {
           body: response,
         });
       } else {
-        throw new ErrorObject('id not found ', 400);
+        throw new ErrorObject('id not found ', 404);
       }
     } catch (error) {
       next(error);
@@ -120,7 +121,7 @@ module.exports = {
           body: response,
         });
       } else {
-        throw new ErrorObject('id not found or nothing to change', 400);
+        throw new ErrorObject('id not found or nothing to change', 422);
       }
     } catch (error) {
       next(error);

@@ -113,7 +113,7 @@ module.exports = {
       } else {
         throw new ErrorObject(
           'Transactions not found or nothing to change',
-          400
+          422
         );
       }
     } catch (error) {

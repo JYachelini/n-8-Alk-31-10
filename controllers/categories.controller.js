@@ -54,11 +54,12 @@ module.exports = {
 
       const response = await Category.findByPk(id);
 
-      if (!response) throw new ErrorObject('ID not found', 409);
+      if (!response) throw new ErrorObject('ID not found or nothing to change', 422);
 
       await response.update({ name, description });
 
       endpointResponse({
+        code: 201,
         res,
         message: response,
       });
