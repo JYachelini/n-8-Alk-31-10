@@ -19,7 +19,7 @@ module.exports = {
       const size = 10;
       const attributes = ['firstName', 'lastName', 'email', 'createdAt'];
       const response = await userService.list(attributes, page, size);
-      if (!response) throw new ErrorObject('Error searching users', 204);
+      if (!response) throw new ErrorObject('Error searching users', 500);
       const tokens = response.map((user) => jwt.encode(user.dataValues));
 
       const pagesUrl = await paginationUrls(User, page);
