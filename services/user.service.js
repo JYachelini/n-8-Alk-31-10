@@ -18,11 +18,9 @@ module.exports = {
       where: {
         email: user.email,
       },
-      attributes: {
-        exclude: ['password'],
-      },
       defaults: user,
     });
+    delete response.dataValues.password;
 
     return [response, created];
   },

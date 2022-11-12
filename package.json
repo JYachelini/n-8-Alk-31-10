@@ -9,10 +9,11 @@
     "type": "git",
     "url": "https://github.com/gabodmc/nodejs-boilerplate"
   },
+  "main": "index.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "node .",
     "test": "mocha ./test/*.js",
-    "dev": "nodemon app.js",
+    "dev": "nodemon .",
     "prepare": "husky install",
     "seed": "sequelize-cli db:seed:all",
     "migrate": "sequelize-cli db:migrate"
