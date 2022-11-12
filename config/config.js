@@ -32,5 +32,6 @@ module.exports = {
   },
 
   secret: process.env.SECRET,
-  url: process.env.URL,
+  port: process.env.PORT | 3000,
+  url: process.env.URL + ':' + this.port,
 };

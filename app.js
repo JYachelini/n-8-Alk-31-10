@@ -6,10 +6,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
-require('dotenv').config();
 const indexRouter = require('./routes/index');
-const { sequelize } = require('./database/models/');
-const PORT = process.env.PORT || 3000;
+const config = require('./config/config');
 
 const app = express();
 app.use(cors());
@@ -37,16 +35,6 @@ app.use((err, req, res, next) => {
   res.status(status).json({ message });
 });
 
-sequelize
-  .sync({ logging: false })
-  .then(() => {
-    console.log('Database connected');
-    app.listen(process.env.NODE_ENV !== 'test' ? PORT : 3001, () => {
-      console.log(`Server listening at ${PORT}`); // eslint-disable-line no-console
-    });
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+app.set('port', config.port);
 
 module.exports = app;
