@@ -6,6 +6,7 @@ specifiers:
   chai: ^4.3.4
   cookie-parser: ~1.4.4
   cors: ^2.8.5
+  cross-env: ^7.0.3
   debug: ~2.6.9
   dotenv: ^8.2.0
   eslint: ^8.26.0
@@ -49,6 +50,7 @@ dependencies:
 
 devDependencies:
   chai: 4.3.7
+  cross-env: 7.0.3
   eslint: 8.27.0
   husky: 8.0.2
   jest: 27.0.6
@@ -1514,6 +1516,14 @@ packages:
       object-assign: 4.1.1
       vary: 1.1.2
     dev: false
+
+  /cross-env/7.0.3:
+    resolution: {integrity: sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==}
+    engines: {node: '>=10.14', npm: '>=6', yarn: '>=1'}
+    hasBin: true
+    dependencies:
+      cross-spawn: 7.0.3
+    dev: true
 
   /cross-spawn/7.0.3:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}

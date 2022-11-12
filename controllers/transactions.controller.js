@@ -55,7 +55,13 @@ module.exports = {
     try {
       const { category, amount, date } = req.body;
       const user = req.user;
-      const data = { userId: user.id, categoryId, category, amount, date };
+      const data = {
+        userId: user.id,
+        categoryId: category,
+        category,
+        amount,
+        date,
+      };
       const response = await transactionService.create(data);
       const token = jwt.encode(response.dataValues);
       endpointResponse({
@@ -85,7 +91,7 @@ module.exports = {
       else
         throw new ErrorObject(
           'Transactions not found or nothing to change',
-          400
+          422
         );
     } catch (error) {
       next(error);

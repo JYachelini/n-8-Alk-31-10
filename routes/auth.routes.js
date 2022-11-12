@@ -8,8 +8,8 @@ const router = Router();
 router.post('/login', validator(authSchema.login), authController.login);
 router.post(
   '/register',
-  validator(userSchema.create),
   upload.single('avatar'),
+  validator(userSchema.create),
   authController.register
 );
 
