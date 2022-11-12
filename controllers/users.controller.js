@@ -67,11 +67,12 @@ module.exports = {
       const [response, created] = await userService.create(user);
 
       if (!created) {
-        fs.unlink(req.file.path, (err) => {
-          if (err) {
-            next(new ErrorObject(err, 400));
-          }
-        });
+        if (file)
+          fs.unlink(req.file.path, (err) => {
+            if (err) {
+              next(new ErrorObject(err, 400));
+            }
+          });
 
         throw new ErrorObject('User or email already exist.', 400);
       }
