@@ -10,7 +10,7 @@ module.exports = {
   },
 
   down: async (queryInterface) => {
-    await queryInterface.bulkDelete('Transaction', null, {});
+    await queryInterface.bulkDelete('Transactions', null, {});
   },
 };
 

@@ -8,6 +8,7 @@ const { validator, ownershipUser, checkAuth } = require('../middlewares');
 const router = express.Router();
 
 router.get('/', checkAuth, ownershipUser, userController.get);
+
 router.get(
   '/:id',
   validator(paramSchema.validatorId),
