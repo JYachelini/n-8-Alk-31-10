@@ -45,7 +45,7 @@ module.exports = {
 
       endpointResponse({
         res,
-        message: 'Users retrieved successfully',
+        message: 'User retrieved successfully',
         body: token,
       });
     } catch (error) {
@@ -73,10 +73,10 @@ module.exports = {
       delete response.dataValues.password;
       const token = jwt.encode(response.dataValues);
 
-      if (!created) throw new ErrorObject('User or email already exist.', 400);
+      if (!created) throw new ErrorObject('User or email already exist', 400);
       endpointResponse({
         res,
-        message: 'Success.',
+        message: 'Success',
         body: token,
       });
     } catch (error) {
@@ -118,7 +118,7 @@ module.exports = {
       if (!response[0] == 0) {
         endpointResponse({
           res,
-          message: 'Users updated successfully',
+          message: 'User updated successfully',
           body: response,
         });
       } else {
