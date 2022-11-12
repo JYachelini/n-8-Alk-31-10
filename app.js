@@ -41,7 +41,7 @@ sequelize
   .sync({ logging: false })
   .then(() => {
     console.log('Database connected');
-    app.listen(PORT, () => {
+    app.listen(process.env.NODE_ENV !== 'test' ? PORT : 3001, () => {
       console.log(`Server listening at ${PORT}`); // eslint-disable-line no-console
     });
   })
