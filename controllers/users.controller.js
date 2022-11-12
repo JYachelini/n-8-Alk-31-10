@@ -1,15 +1,10 @@
 const { User } = require('../database/models');
-const fs = require('fs');
+const { endpointResponse } = require('../helpers/success');
+const { catchAsync } = require('../helpers/catchAsync');
 const bcrypt = require('../utils/bcrypt.util');
+const { ErrorObject } = require('../helpers/error');
 const { jwt } = require('../middlewares');
-const {
-  paginationUrls,
-  ErrorObject,
-  catchAsync,
-  endpointResponse,
-} = require('../helpers');
-const { userService } = require('../services');
-const { url } = require('../config/config');
+const { paginationUrls } = require('../helpers/pagination');
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
@@ -17,9 +12,11 @@ module.exports = {
     try {
       const { page = 0 } = req.query;
       const size = 10;
-      const attributes = ['firstName', 'lastName', 'email', 'createdAt'];
-      const response = await userService.list(attributes, page, size);
-      if (!response) throw new ErrorObject('Error searching users', 500);
+      const response = await User.findAll({
+        attributes: ['firstName', 'lastName', 'email', 'createdAt'],
+        limit: size,
+        offset: page * size,
+      });
       const tokens = response.map((user) => jwt.encode(user.dataValues));
 
       const pagesUrl = await paginationUrls(User, page);
@@ -29,7 +26,7 @@ module.exports = {
         message: 'Users retrieved successfully',
         body: {
           pagesUrl,
-          users: [...tokens],
+          tokens,
         },
       });
     } catch (error) {
@@ -40,8 +37,10 @@ module.exports = {
   getById: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;
-      const response = await userService.find(id);
+      const response = await User.findByPk(id, { raw: true });
+
       if (!response) throw new ErrorObject('User not found', 404);
+      delete response.password;
       const token = jwt.encode(response);
 
       endpointResponse({
@@ -57,29 +56,25 @@ module.exports = {
   create: catchAsync(async (req, res, next) => {
     try {
       let { firstName, lastName, email, password } = req.body;
-      const file = req.file;
-      let avatar = null;
-      if (file) avatar = `${url}/uploads/${file.filename}`;
+
       password = await bcrypt.hashData(password, 10);
 
-      const user = { firstName, lastName, email, password, avatar };
-
-      const [response, created] = await userService.create(user);
-
-      if (!created) {
-        fs.unlink(req.file.path, (err) => {
-          if (err) {
-            next(new ErrorObject(err, 400));
-          }
-        });
-
-        throw new ErrorObject('User or email already exist', 409);
-      }
-
+      const [response, created] = await User.findOrCreate({
+        where: {
+          email,
+        },
+        defaults: {
+          firstName,
+          lastName,
+          email,
+          password,
+        },
+      });
+      delete response.dataValues.password;
       const token = jwt.encode(response.dataValues);
 
+      if (!created) throw new ErrorObject('User or email already exist', 400);
       endpointResponse({
-        code: 201,
         res,
         message: 'Success',
         body: token,
@@ -92,7 +87,9 @@ module.exports = {
   remove: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;
-      const response = await userService.remove(id);
+      const response = await User.destroy({
+        where: { id },
+      });
       if (response) {
         endpointResponse({
           res,
@@ -100,7 +97,7 @@ module.exports = {
           body: response,
         });
       } else {
-        throw new ErrorObject('id not found', 404);
+        throw new ErrorObject('id not found ', 400);
       }
     } catch (error) {
       next(error);
@@ -110,10 +107,14 @@ module.exports = {
   update: catchAsync(async (req, res, next) => {
     try {
       let { firstName, lastName, email, password } = req.body;
-      const { id } = req.params;
       password = await bcrypt.hashData(password);
-      const data = { firstName, lastName, email, password };
-      const response = await userService.update(data, id);
+      const { id } = req.params;
+      const response = await User.update(
+        { firstName, lastName, email, password },
+        {
+          where: { id },
+        }
+      );
       if (!response[0] == 0) {
         endpointResponse({
           res,
@@ -121,7 +122,7 @@ module.exports = {
           body: response,
         });
       } else {
-        throw new ErrorObject('id not found or nothing to change', 422);
+        throw new ErrorObject('id not found or nothing to change', 400);
       }
     } catch (error) {
       next(error);
