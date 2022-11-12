@@ -20,7 +20,7 @@ it('should return a token', async () => {
 });
 
 it('should return all users', async () => {
-  const { body } = await api.get('/users');
+  const { body } = await api.get('/users').set({ Authorization: token });
 
   expect(body.message).toContain('Users retrieved successfully');
 });
@@ -43,7 +43,7 @@ it('should register a new user', async () => {
     password: '12345678',
   };
 
-  const { body } = await api.post('/users').send(newUser);
+  const { body } = await api.post('/auth/register').send(newUser);
 
   expect(body.message).toContain('Success');
 });

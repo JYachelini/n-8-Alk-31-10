@@ -46,7 +46,7 @@ module.exports = {
 
       endpointResponse({
         res,
-        message: 'Users retrieved successfully',
+        message: 'User retrieved successfully',
         body: token,
       });
     } catch (error) {
@@ -73,7 +73,7 @@ module.exports = {
           }
         });
 
-        throw new ErrorObject('User or email already exist.', 409);
+        throw new ErrorObject('User or email already exist', 409);
       }
 
       const token = jwt.encode(response.dataValues);
@@ -81,7 +81,7 @@ module.exports = {
       endpointResponse({
         code: 201,
         res,
-        message: 'Success.',
+        message: 'Success',
         body: token,
       });
     } catch (error) {
@@ -100,7 +100,7 @@ module.exports = {
           body: response,
         });
       } else {
-        throw new ErrorObject('id not found ', 404);
+        throw new ErrorObject('id not found', 404);
       }
     } catch (error) {
       next(error);
@@ -117,7 +117,7 @@ module.exports = {
       if (!response[0] == 0) {
         endpointResponse({
           res,
-          message: 'Users updated successfully',
+          message: 'User updated successfully',
           body: response,
         });
       } else {
