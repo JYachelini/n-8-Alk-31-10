@@ -12,7 +12,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node .",
-    "test": "mocha ./test/*.js",
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand --forceExit",
     "dev": "nodemon .",
     "prepare": "husky install",
     "seed": "sequelize-cli db:seed:all",
@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "chai": "^4.3.4",
+    "cross-env": "^7.0.3",
     "eslint": "^8.26.0",
     "husky": "^8.0.1",
     "jest": "27.0.6",
@@ -56,5 +57,8 @@
       "prettier --write",
       "eslint"
     ]
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
