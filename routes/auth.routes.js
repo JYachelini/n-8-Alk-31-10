@@ -21,6 +21,30 @@ const router = Router();
  *      properties:
  *        body:
  *         type: string
+ *   createUser:
+ *    type: object
+ *    properties:
+ *      id:
+ *        type: integer
+ *        example: 2
+ *      firstName:
+ *        type: string
+ *        example: John
+ *      lastName:
+ *        type: string
+ *        example: Connor
+ *      email:
+ *        type: string
+ *        example: admin@admin.com
+ *      password:
+ *        type: string
+ *        example: 12345678
+ *      createdAt:
+ *        type: string
+ *        example: 2022/11/11
+ *      updatedAt:
+ *        type: string
+ *        example: 2022/11/11
 
  */
 
@@ -75,7 +99,7 @@ router.post('/login', validator(authSchema.login), authController.login);
  *         content:
  *           application/json:
  *             schema:
- *                 $ref: '#/definitions/userSchema'
+ *                 $ref: '#/definitions/createUser'
  *       '404':
  *         description: Error searching users
  *         content:

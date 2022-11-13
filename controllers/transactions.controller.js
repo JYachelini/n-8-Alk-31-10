@@ -53,11 +53,11 @@ module.exports = {
 
   create: catchAsync(async (req, res, next) => {
     try {
-      const { category, amount, date } = req.body;
+      const { categoryId, amount, date } = req.body;
       const user = req.user;
       const data = {
         userId: user.id,
-        categoryId: category,
+        categoryId,
         amount,
         date,
       };
