@@ -28,6 +28,12 @@ const router = express.Router();
  *      avatar:
  *        type: string
  *        example: localhost:3000/uploads/12312.webp
+ *      createdAt:
+ *        type: string
+ *        example: 2022/11/11
+ *      updatedAt:
+ *        type: string
+ *        example: 2022/11/11
  *   bodyUsers:
  *    type: object
  *    properties:
@@ -82,6 +88,12 @@ const router = express.Router();
  *     summary: Finds Users
  *     description: Get all users
  *     parameters:
+ *      - name: page
+ *        in: query
+ *        description: pagination
+ *        required: false
+ *        schema:
+ *           type: int
  *     responses:
  *       '200':
  *         description: Users retrieved successfully
@@ -112,6 +124,12 @@ router.get('/', checkAuth, ownershipUser, userController.get);
  *        in: path
  *        description: ID of user
  *        required: true
+ *        schema:
+ *           type: int
+ *      - name: page
+ *        in: query
+ *        description: pagination
+ *        required: false
  *        schema:
  *           type: int
  *     responses:
