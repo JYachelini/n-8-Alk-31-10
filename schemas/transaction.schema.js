@@ -1,6 +1,6 @@
 module.exports = {
   create: {
-    category: {
+    categoryId: {
       exists: {
         errorMessage: 'category is required',
       },

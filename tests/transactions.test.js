@@ -3,10 +3,13 @@ const supertest = require('supertest');
 const app = require('../app');
 const api = supertest(app);
 const db = require('../database/models');
-const { userService } = require('../services');
+const { userService, categoryService } = require('../services');
 const { hashData } = require('../utils/bcrypt.util');
 const { User } = require('../database/models');
 
+let category;
+let transaction;
+let transactionModify;
 beforeAll(async () => {
   db.sequelize.sync({ logging: false });
 
@@ -21,25 +24,26 @@ beforeAll(async () => {
   const search = await userService.find({ email: mockUser.email });
 
   if (!search) await User.create(mockUser);
+  category = await categoryService.list();
+  transaction = {
+    categoryId: category[0].id,
+    amount: 204,
+    date: '2022-05-05',
+  };
+
+  transactionModify = {
+    categoryId: category[0].id,
+    amount: 204000,
+    date: '2022-11-05',
+  };
 });
-
-const transaction = {
-  category: 1,
-  amount: 204,
-  date: '2022-05-05',
-};
-
-const transactionModify = {
-  category: 2,
-  amount: 204000,
-  date: '2022-11-05',
-};
 
 let idtransactionAdmin;
 
 describe('POST Transactions', () => {
   it('Create transaction as admin', async () => {
     const mockAdmin = await userService.find({ roleId: 1 });
+    console.log(mockAdmin);
     const token = `Bearer ${jwt.encode(mockAdmin)}`;
     const { body, status } = await api
       .post('/transactions')
@@ -50,8 +54,6 @@ describe('POST Transactions', () => {
     expect(body.message).toContain('Transactions retrieved successfully');
     const decodetoken = jwt.decode(body.body);
     idtransactionAdmin = decodetoken.id;
-    console.log('linea 55', idtransactionAdmin);
-    console.log('linea 56', idtransactionAdmin.id);
   });
 
   it('create transaction as User', async () => {
@@ -92,13 +94,12 @@ describe('POST FAIL', () => {
     const token = `Bearer ${jwt.encode(mockAdmin)}`;
     const { amount, date } = transaction;
 
-    const { body, status } = await api
+    const { status } = await api
       .post('/transactions')
       .set({ Authorization: token })
       .send({ amount, date });
 
     expect(status).toBe(400);
-    expect(body.message.category.msg).toContain('category is required');
   });
 
   it('without the amount argument', async () => {
@@ -228,7 +229,7 @@ describe('PUT Transaction', () => {
 });
 
 describe('PUT FAIL', () => {
-  it('falla', async () => {
+  it('should return 404, error updating transaction', async () => {
     const mockAdmin = await userService.find({ roleId: 1 });
     const token = `Bearer ${jwt.encode(mockAdmin)}`;
     const { body, status } = await api

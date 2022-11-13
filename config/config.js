@@ -33,5 +33,5 @@ module.exports = {
 
   secret: process.env.SECRET,
   port: process.env.PORT | 3000,
-  url: process.env.URL + ':' + this.port,
+  url: process.env.URL + ':' + (process.env.PORT | 3000),
 };
