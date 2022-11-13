@@ -34,9 +34,10 @@ const ownershipUser = async (req, res, next) => {
 const ownershipTransaction = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { userId } = await transactionService.getById(id);
+    const transaction = await transactionService.getById(id);
+    if (!transaction) throw new ErrorObject('Transaction not found', 404);
     const user = req.user;
-    if (canPass(user, userId)) return next();
+    if (canPass(user, transaction.userId)) return next();
 
     throw new ErrorObject('not allowed', 403);
   } catch (error) {
