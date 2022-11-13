@@ -22,7 +22,7 @@ const router = express.Router();
  *     type: object
  *     properties:
  *      id:
- *        type: int
+ *        type: integer
  *        example: 4
  *      firstName:
  *        type: string
@@ -55,7 +55,7 @@ const router = express.Router();
  *            type: string
  *            example : localhost:300/users?page=1
  *          count:
- *            type: int
+ *            type: integer
  *            example : 5
  *      response:
  *        type: array
@@ -103,7 +103,7 @@ const router = express.Router();
  *        description: pagination
  *        required: false
  *        schema:
- *           type: int
+ *           type: integer
  *     responses:
  *       '200':
  *         description: Users retrieved successfully
@@ -137,13 +137,13 @@ router.get('/', checkAuth, ownershipUser, userController.get);
  *        description: ID of user
  *        required: true
  *        schema:
- *           type: int
+ *           type: integer
  *      - name: page
  *        in: query
  *        description: pagination
  *        required: false
  *        schema:
- *           type: int
+ *           type: integer
  *     responses:
  *       '200':
  *         description: Users retrieved successfully
@@ -182,7 +182,7 @@ router.get(
  *        description: ID of user
  *        required: true
  *        schema:
- *           type: int
+ *           type: integer
  *     responses:
  *       '200':
  *         description: Users retrieved successfully
@@ -222,7 +222,7 @@ router.delete(
  *        description: ID of user
  *        required: true
  *        schema:
- *           type: int
+ *           type: integer
  *     requestBody:
  *         description: Created user object
  *         content:
