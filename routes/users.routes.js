@@ -105,18 +105,35 @@ const router = express.Router();
  *        schema:
  *           type: integer
  *     responses:
- *       '200':
- *         description: Users retrieved successfully
+ *      200:
+ *          description: OK
+ *          content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: true
+ *                 code:
+ *                   type: integer
+ *                   example: 200
+ *                 message:
+ *                   type: string
+ *                   example: Some message of success
+ *                 body:
+ *                  type: object
+ *                  example: Some token
+ *      4XX:
+ *         description: FAILED
  *         content:
  *           application/json:
  *             schema:
- *                 $ref: '#/definitions/bodyUsers'
- *       '500':
- *         description: Error searching users
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/definitions/error'
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Some error message
  */
 
 router.get('/', checkAuth, ownershipUser, userController.get);
@@ -145,18 +162,35 @@ router.get('/', checkAuth, ownershipUser, userController.get);
  *        schema:
  *           type: integer
  *     responses:
- *       '200':
- *         description: Users retrieved successfully
+ *      200:
+ *          description: OK
+ *          content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: true
+ *                 code:
+ *                   type: integer
+ *                   example: 200
+ *                 message:
+ *                   type: string
+ *                   example: Some message of success
+ *                 body:
+ *                  type: object
+ *                  example: Some token
+ *      4XX:
+ *         description: FAILED
  *         content:
  *           application/json:
  *             schema:
- *                 $ref: '#/definitions/bodyUsers'
- *       '404':
- *         description: Error searching users
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/definitions/error'
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Some error message
  */
 router.get(
   '/:id',
@@ -184,18 +218,35 @@ router.get(
  *        schema:
  *           type: integer
  *     responses:
- *       '200':
- *         description: Users retrieved successfully
+ *      200:
+ *          description: OK
+ *          content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: true
+ *                 code:
+ *                   type: integer
+ *                   example: 200
+ *                 message:
+ *                   type: string
+ *                   example: Some message of success
+ *                 body:
+ *                  type: object
+ *                  example: Some token
+ *      4XX:
+ *         description: FAILED
  *         content:
  *           application/json:
  *             schema:
- *                 $ref: '#/definitions/responseSchema'
- *       '404':
- *         description: Error searching users
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/definitions/error'
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Some error message
  */
 
 router.delete(
@@ -230,18 +281,35 @@ router.delete(
  *           schema:
  *             $ref: '#/definitions/userSchema'
  *     responses:
- *       '200':
- *         description: Users retrieved successfully
+ *      200:
+ *          description: OK
+ *          content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: true
+ *                 code:
+ *                   type: integer
+ *                   example: 200
+ *                 message:
+ *                   type: string
+ *                   example: Some message of success
+ *                 body:
+ *                  type: object
+ *                  example: Some token
+ *      4XX:
+ *         description: FAILED
  *         content:
  *           application/json:
  *             schema:
- *                 $ref: '#/definitions/responseSchema'
- *       '404':
- *         description: Error searching users
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/definitions/error'
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Some error message
  */
 
 router.put(
