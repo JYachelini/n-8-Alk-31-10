@@ -39,6 +39,8 @@ async function generateUsers(admin) {
       email: 'admin@admin.com',
       password: passwordHash,
       roleId: admin,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
   }
   for (let i = 1; i <= 10; i++) {
