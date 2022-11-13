@@ -158,7 +158,6 @@ router.get('/', checkAuth, ownershipUser, userController.get);
  *             schema:
  *               $ref: '#/definitions/error'
  */
-
 router.get(
   '/:id',
   validator(paramSchema.validatorId),
