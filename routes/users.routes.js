@@ -190,7 +190,7 @@ router.get(
  *         content:
  *           application/json:
  *             schema:
- *                 $ref: '#/definitions/bodyUsers'
+ *                 $ref: '#/definitions/responseSchema'
  *       '404':
  *         description: Error searching users
  *         content:
@@ -229,14 +229,14 @@ router.delete(
  *         content:
  *          application/json:
  *           schema:
- *             $ref: '#/definitions/userSchema'
+ *             $ref: '#/definitions/responseSchema'
  *     responses:
  *       '200':
  *         description: Users retrieved successfully
  *         content:
  *           application/json:
  *             schema:
- *                 $ref: '#/definitions/bodyUsers'
+ *                 $ref: '#/definitions/responseSchema'
  *       '404':
  *         description: Error searching users
  *         content:

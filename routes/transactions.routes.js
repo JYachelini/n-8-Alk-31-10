@@ -81,7 +81,7 @@ const router = express.Router();
  *         content:
  *           application/json:
  *             schema:
- *                 $ref: '#/definitions/bodyUsers'
+ *                 $ref: '#/definitions/responseSchemaT'
  *       '404':
  *         description: Error searching users
  *         content:
@@ -196,7 +196,7 @@ router.get(
  *         content:
  *           application/json:
  *             schema:
- *                 $ref: '#/definitions/bodyUsers'
+ *                 $ref: '#/definitions/responseSchemaT'
  *       '404':
  *         description: Error searching users
  *         content:
