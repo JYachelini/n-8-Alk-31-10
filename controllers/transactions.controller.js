@@ -76,11 +76,11 @@ module.exports = {
 
   update: catchAsync(async (req, res, next) => {
     try {
-      const { category, amount, date } = req.body;
+      const { categoryId, amount, date } = req.body;
       const user = req.user;
       const { id } = req.params;
       const filter = { id };
-      const data = { userId: user.id, categoryId: category, amount, date };
+      const data = { userId: user.id, categoryId, amount, date };
       const response = await transactionService.update(data, filter);
       if (!response[0] == 0)
         endpointResponse({

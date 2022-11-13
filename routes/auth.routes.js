@@ -77,25 +77,25 @@ const router = Router();
  *                default: 12345678
  *    responses:
  *      200:
- *          description: OK
- *          content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: true
- *                 code:
- *                   type: integer
- *                   example: 200
- *                 message:
- *                   type: string
- *                   example: Some message of success
- *                 body:
+ *        description: OK
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                status:
+ *                  type: string
+ *                  example: true
+ *                code:
+ *                  type: integer
+ *                  example: 200
+ *                message:
+ *                  type: string
+ *                  example: Some message of success
+ *                body:
  *                  type: object
  *                  example: Some token
- *      4XX:
+ *      404:
  *         description: FAILED
  *         content:
  *           application/json:
@@ -144,7 +144,7 @@ router.post('/login', validator(authSchema.login), authController.login);
  *                 body:
  *                  type: object
  *                  example: Some token
- *       '404':
+ *      404:
  *         description: Error searching users
  *         content:
  *           application/json:
