@@ -38,7 +38,7 @@ const router = express.Router();
  *   responseCreateSchemaT:
  *     type: object
  *     properties:
- *      descriptions:
+ *      description:
  *        type: string
  *        example: 'Test for transactions'
  *      amount:
