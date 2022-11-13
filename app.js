@@ -1,13 +1,13 @@
 const createError = require('http-errors');
 const express = require('express');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSetup = require('./helpers/swagger');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
-require('dotenv').config();
 const indexRouter = require('./routes/index');
-const { sequelize } = require('./database/models/');
-const PORT = process.env.PORT || 3000;
+const config = require('./config/config');
 
 const app = express();
 app.use(cors());
@@ -19,6 +19,7 @@ app.use(cookieParser());
 app.use('/uploads', express.static(path.join(__dirname, 'tmp')));
 
 app.use('/', indexRouter);
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSetup));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -34,16 +35,6 @@ app.use((err, req, res, next) => {
   res.status(status).json({ message });
 });
 
-sequelize
-  .sync({ logging: false })
-  .then(() => {
-    console.log('Database connected');
-    app.listen(PORT, () => {
-      console.log(`Server listening at ${PORT}`); // eslint-disable-line no-console
-    });
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+app.set('port', config.port);
 
 module.exports = app;

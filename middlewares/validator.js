@@ -12,11 +12,12 @@ module.exports = {
           if (!errors.isEmpty()) throw new ErrorObject(errors.mapped(), 400);
           next();
         } catch (error) {
-          fs.unlink(req.file.path, (err) => {
-            if (err) {
-              next(new ErrorObject(err, 400));
-            }
-          });
+          if (req.file)
+            fs.unlink(req.file.path, (err) => {
+              if (err) {
+                next(new ErrorObject(err, 400));
+              }
+            });
           next(error);
         }
       },

@@ -1,36 +1,29 @@
-const { Transaction } = require('../database/models');
-const {
-  paginationUrls,
-  ErrorObject,
-  catchAsync,
-  endpointResponse,
-} = require('../helpers');
+const { ErrorObject, catchAsync, endpointResponse } = require('../helpers');
 const { jwt } = require('../middlewares');
+const { isAdmin } = require('../middlewares/auth');
+const { transactionService } = require('../services');
 
 module.exports = {
   get: catchAsync(async (req, res, next) => {
     try {
       const { query, page = 0 } = req.query;
       const size = 10;
-      let response;
-      if (query)
-        response = await Transaction.findAll({
-          where: { userId: query },
-          raw: true,
-          limit: size,
-          offset: page * size,
-        });
-      else
-        response = await Transaction.findAll({
-          raw: true,
-          limit: size,
-          offset: page * size,
-        });
+      const user = req.user;
+      if (!isAdmin(user.roleId) && user.id != query) {
+        throw new ErrorObject('Not allowed.', 403);
+      }
 
-      const tokens = response.map((element) => jwt.encode(element));
-      const pagesUrls = await paginationUrls(Transaction, page, {
-        userId: query,
-      });
+      let response;
+      let filter = {};
+      if (query) {
+        filter = { userId: query };
+        response = await transactionService.list(filter, size, page);
+      } else response = await transactionService.list(filter, size, page);
+
+      const { transactions, pagesUrls } = response;
+
+      const tokens = transactions.map((element) => jwt.encode(element));
+
       endpointResponse({
         res,
         message: 'Transactions retrieved successfully',
@@ -44,7 +37,7 @@ module.exports = {
   getById: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;
-      const response = await Transaction.findByPk(id, { raw: true });
+      const response = await transactionService.findById(id);
 
       if (!response) throw new ErrorObject('Transaction not found', 404);
       const token = jwt.encode(response);
@@ -60,14 +53,15 @@ module.exports = {
 
   create: catchAsync(async (req, res, next) => {
     try {
-      const { user, category, amount, date } = req.body;
-
-      const response = await Transaction.create({
-        userId: user,
+      const { category, amount, date } = req.body;
+      const user = req.user;
+      const data = {
+        userId: user.id,
         categoryId: category,
         amount,
         date,
-      });
+      };
+      const response = await transactionService.create(data);
       const token = jwt.encode(response.dataValues);
       endpointResponse({
         res,
@@ -81,31 +75,23 @@ module.exports = {
 
   update: catchAsync(async (req, res, next) => {
     try {
-      const { user, category, amount, date } = req.body;
+      const { category, amount, date } = req.body;
+      const user = req.user;
       const { id } = req.params;
-      const response = await Transaction.update(
-        {
-          userId: user,
-          categoryId: category,
-          amount,
-          date,
-        },
-        {
-          where: { id },
-        }
-      );
-      if (!response[0] == 0) {
+      const filter = { id };
+      const data = { userId: user.id, categoryId: category, amount, date };
+      const response = await transactionService.update(data, filter);
+      if (!response[0] == 0)
         endpointResponse({
           res,
           message: 'Transactions retrieved successfully',
           body: response,
         });
-      } else {
+      else
         throw new ErrorObject(
           'Transactions not found or nothing to change',
-          400
+          422
         );
-      }
     } catch (error) {
       next(error);
     }
@@ -115,11 +101,8 @@ module.exports = {
     try {
       const { id } = req.params;
 
-      const response = await Transaction.destroy({
-        where: {
-          id,
-        },
-      });
+      const filter = { id };
+      const response = await transactionService.remove(filter);
       endpointResponse({
         res,
         message: 'Transactions retrieved successfully',
