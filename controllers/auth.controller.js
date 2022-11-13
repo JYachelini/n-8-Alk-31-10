@@ -58,6 +58,7 @@ module.exports = {
 
       endpointResponse({
         res,
+        code: 201,
         message: 'Success.',
         body: token,
       });
