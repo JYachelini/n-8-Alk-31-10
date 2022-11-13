@@ -53,13 +53,14 @@ module.exports = {
 
   create: catchAsync(async (req, res, next) => {
     try {
-      const { categoryId, amount, date } = req.body;
+      const { categoryId, amount, date, description } = req.body;
       const user = req.user;
       const data = {
         userId: user.id,
         categoryId,
         amount,
         date,
+        description,
       };
       const response = await transactionService.create(data);
       const token = jwt.encode(response.dataValues);

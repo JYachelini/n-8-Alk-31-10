@@ -17,7 +17,7 @@ const router = express.Router();
  *      id:
  *        type: integer
  *        example: 4
- *      descriptions:
+ *      description:
  *        type: string
  *        example: 'Test for transactions'
  *      amount:
@@ -57,7 +57,7 @@ const router = express.Router();
  *      id:
  *        type: integer
  *        example: 4
- *      descriptions:
+ *      description:
  *        type: string
  *        example: 'Test for transactions'
  *      amount:
