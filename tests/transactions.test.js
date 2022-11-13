@@ -29,6 +29,14 @@ const transaction = {
   date: '2022-05-05',
 };
 
+const transactionModify = {
+  category: 2,
+  amount: 204000,
+  date: '2022-11-05',
+};
+
+let idtransactionAdmin;
+
 describe('POST Transactions', () => {
   it('Create transaction as admin', async () => {
     const mockAdmin = await userService.find({ roleId: 1 });
@@ -40,6 +48,10 @@ describe('POST Transactions', () => {
 
     expect(status).toBe(200);
     expect(body.message).toContain('Transactions retrieved successfully');
+    const decodetoken = jwt.decode(body.body);
+    idtransactionAdmin = decodetoken.id;
+    console.log('linea 55', idtransactionAdmin);
+    console.log('linea 56', idtransactionAdmin.id);
   });
 
   it('create transaction as User', async () => {
@@ -198,5 +210,59 @@ describe('GET FAIL', () => {
 
     expect(status).toBe(403);
     expect(body.message).toContain('Not allowed.');
+  });
+});
+
+describe('PUT Transaction', () => {
+  it('modificar transaccion', async () => {
+    const mockAdmin = await userService.find({ roleId: 1 });
+    const token = `Bearer ${jwt.encode(mockAdmin)}`;
+    const { body, status } = await api
+      .put(`/transactions/${idtransactionAdmin}`)
+      .set({ Authorization: token })
+      .send(transactionModify);
+
+    expect(status).toBe(200);
+    expect(body.message).toContain('Transactions retrieved successfully');
+  });
+});
+
+describe('PUT FAIL', () => {
+  it('falla', async () => {
+    const mockAdmin = await userService.find({ roleId: 1 });
+    const token = `Bearer ${jwt.encode(mockAdmin)}`;
+    const { body, status } = await api
+      .put(`/transactions/${0}`)
+      .set({ Authorization: token })
+      .send(transactionModify);
+
+    expect(status).toBe(404);
+    expect(body.message).toContain('Transaction not found');
+  });
+});
+
+describe('DELETE Transaction', () => {
+  it('delete transaction', async () => {
+    const mockAdmin = await userService.find({ roleId: 1 });
+    const token = `Bearer ${jwt.encode(mockAdmin)}`;
+    const { body, status } = await api
+      .delete(`/transactions/${idtransactionAdmin}`)
+      .set({ Authorization: token });
+
+    expect(status).toBe(200);
+    expect(body.message).toContain('Transactions retrieved successfully');
+  });
+});
+
+describe('DEELETE FAIL', () => {
+  it('Fail delete transaction', async () => {
+    const mockAdmin = await userService.find({ roleId: 1 });
+    const token = `Bearer ${jwt.encode(mockAdmin)}`;
+    const { body, status } = await api
+      .delete(`/transactions/${0}`)
+      .set({ Authorization: token });
+
+    expect(status).toBe(404);
+    expect(body.message).toContain('Transaction not found');
   });
 });
