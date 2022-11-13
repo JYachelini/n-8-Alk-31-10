@@ -66,8 +66,9 @@ const router = express.Router();
  *     tags:
  *       - Transactions
  *     summary: create transaction
+ *     security:
+ *      - bearerAuth: []
  *     description: create transaction
- *     parameters:
  *     requestBody:
  *         description: Created transaction object
  *         content:
@@ -103,6 +104,8 @@ router.post(
  *     tags:
  *       - Transactions
  *     summary: Finds transactions
+ *     security:
+ *      - bearerAuth: []
  *     description: Get transactions
  *     parameters:
  *      - name: page
@@ -133,6 +136,8 @@ router.get('/', checkAuth, transactionController.get);
  *     tags:
  *       - Transactions
  *     summary: Finds transactions
+ *     security:
+ *      - bearerAuth: []
  *     description: Get transactions
  *     parameters:
  *      - name: userId
@@ -169,6 +174,8 @@ router.get(
  *     tags:
  *       - Transactions
  *     summary: update transaction
+ *     security:
+ *      - bearerAuth: []
  *     description: update transaction by id
  *     parameters:
  *      - name: userId
@@ -213,6 +220,8 @@ router.put(
  *     tags:
  *       - Transactions
  *     summary: delete trannsaction
+ *     security:
+ *      - bearerAuth: []
  *     description: delete transaction by id
  *     parameters:
  *      - name: transactionId

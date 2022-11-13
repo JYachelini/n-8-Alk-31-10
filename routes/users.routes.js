@@ -9,6 +9,14 @@ const router = express.Router();
 
 /**
  * @swagger
+ *  components:
+ *    securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ */
+/**
+ * @swagger
  *  definitions:
  *   responseSchema:
  *     type: object
@@ -86,6 +94,8 @@ const router = express.Router();
  *     tags:
  *       - Users
  *     summary: Finds Users
+ *     security:
+ *      - bearerAuth: []
  *     description: Get all users
  *     parameters:
  *      - name: page
@@ -118,6 +128,8 @@ router.get('/', checkAuth, ownershipUser, userController.get);
  *     tags:
  *       - Users
  *     summary: Finds Users
+ *     security:
+ *      - bearerAuth: []
  *     description: Get users by id
  *     parameters:
  *      - name: userId
@@ -162,6 +174,8 @@ router.get(
  *     tags:
  *       - Users
  *     summary: delete Users
+ *     security:
+ *      - bearerAuth: []
  *     description: delete user by id
  *     parameters:
  *      - name: userId
@@ -200,6 +214,8 @@ router.delete(
  *     tags:
  *       - Users
  *     summary: update Users
+ *     security:
+ *      - bearerAuth: []
  *     description: update user by id
  *     parameters:
  *      - name: userId
