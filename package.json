@@ -12,7 +12,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node .",
-    "test": "cross-env NODE_ENV=test jest --verbose --runInBand --forceExit",
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand --forceExit --detectOpenHandles",
     "dev": "nodemon .",
     "prepare": "husky install",
     "seed": "sequelize-cli db:seed:all",
