@@ -3,6 +3,9 @@ const { ErrorObject, endpointResponse, catchAsync } = require('../helpers');
 const { jwt } = require('../middlewares');
 const { userService } = require('../services');
 
+const { url } = require('../config/config');
+const fs = require('fs');
+
 module.exports = {
   login: catchAsync(async (req, res, next) => {
     try {
@@ -58,6 +61,7 @@ module.exports = {
 
       endpointResponse({
         res,
+        code: 201,
         message: 'Success.',
         body: token,
       });
