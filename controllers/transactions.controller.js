@@ -58,7 +58,6 @@ module.exports = {
       const data = {
         userId: user.id,
         categoryId: category,
-        category,
         amount,
         date,
       };
