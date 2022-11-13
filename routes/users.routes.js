@@ -228,7 +228,7 @@ router.delete(
  *         content:
  *          application/json:
  *           schema:
- *             $ref: '#/definitions/responseSchema'
+ *             $ref: '#/definitions/userSchema'
  *     responses:
  *       '200':
  *         description: Users retrieved successfully
