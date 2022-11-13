@@ -15,19 +15,19 @@ const router = express.Router();
  *     type: object
  *     properties:
  *      id:
- *        type: int
+ *        type: integer
  *        example: 4
  *      descriptions:
  *        type: string
  *        example: 'Test for transactions'
  *      amount:
- *         type: int
+ *         type: integer
  *         example: 204
  *      userId:
- *         type: int
+ *         type: integer
  *         example: 2
  *      categoryId:
- *        type: int
+ *        type: integer
  *        example: 2
  *      createdAt:
  *         type: string
@@ -43,19 +43,19 @@ const router = express.Router();
  *     type: object
  *     properties:
  *      id:
- *        type: int
+ *        type: integer
  *        example: 4
  *      descriptions:
  *        type: string
  *        example: 'Test for transactions'
  *      amount:
- *         type: int
+ *         type: integer
  *         example: 204
  *      userId:
- *         type: int
+ *         type: integer
  *         example: 2
  *      categoryId:
- *        type: int
+ *        type: integer
  *        example: 2
  */
 
@@ -113,7 +113,7 @@ router.post(
  *        description: pagination
  *        required: false
  *        schema:
- *           type: int
+ *           type: integer
  *     responses:
  *       '200':
  *         description: Users retrieved successfully
@@ -145,13 +145,13 @@ router.get('/', checkAuth, transactionController.get);
  *        description: ID of user
  *        required: true
  *        schema:
- *           type: int
+ *           type: integer
  *      - name: page
  *        in: query
  *        description: pagination
  *        required: false
  *        schema:
- *           type: int
+ *           type: integer
  *     responses:
  *       '200':
  *         description: Users retrieved successfully
@@ -183,7 +183,7 @@ router.get(
  *        description: ID of user
  *        required: true
  *        schema:
- *           type: int
+ *           type: integer
  *     requestBody:
  *         description: Created user object
  *         content:
@@ -229,7 +229,7 @@ router.put(
  *        description: ID of transaction
  *        required: true
  *        schema:
- *           type: int
+ *           type: integer
  *     responses:
  *       '200':
  *         description: Users retrieved successfully
