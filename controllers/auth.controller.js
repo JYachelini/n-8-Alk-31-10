@@ -43,6 +43,7 @@ module.exports = {
       password = await bcrypt.hashData(password, 10);
 
       const user = { firstName, lastName, email, password, avatar };
+      console.log(user);
 
       const [response, created] = await userService.create(user);
 

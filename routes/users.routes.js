@@ -82,6 +82,7 @@ const router = express.Router();
  *      avatar:
  *        type: string
  *        example: localhost:3000/uploads/12312.webp
+ *        format: binary
  *      password:
  *        type: string
  *        example: 12345678

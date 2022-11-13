@@ -121,7 +121,7 @@ router.post('/login', validator(authSchema.login), authController.login);
  *     requestBody:
  *         description: Created user object
  *         content:
- *          application/json:
+ *          multipart/form-data:
  *           schema:
  *             $ref: '#/definitions/userSchema'
  *     responses:
