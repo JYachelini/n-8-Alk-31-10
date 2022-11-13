@@ -63,6 +63,7 @@ const router = Router();
 
 router.post('/login', validator(authSchema.login), authController.login);
 
+// --- REGISTER ---
 /**
  * @swagger
  * /auth/register:
