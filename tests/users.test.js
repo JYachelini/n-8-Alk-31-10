@@ -1,4 +1,4 @@
-const { User } = require('../database/models');
+const { User, Role } = require('../database/models');
 const { hashData } = require('../utils/bcrypt.util');
 const supertest = require('supertest');
 
@@ -12,13 +12,20 @@ beforeAll(async () => {
   db.sequelize.sync({ logging: false });
 
   await User.destroy({ where: {}, force: true }).then(function () {});
+  const mockRole = {
+    name: 'Administrator',
+    description: 'Unlimited permissions.',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
 
+  const mockCreated = await Role.create(mockRole);
   const mockAdminUser = {
     firstName: 'administrator',
     lastName: 'administrator',
     email: 'mockAdmin@admin.com',
     password: await hashData('12345678'),
-    roleId: 1,
+    roleId: mockCreated.get().id,
   };
 
   await User.create(mockAdminUser);
@@ -163,8 +170,4 @@ describe('delete:id test suite', function () {
 
     expect(status).toBe(403);
   });
-});
-
-afterAll(async () => {
-  db.sequelize.close();
 });
