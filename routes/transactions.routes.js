@@ -35,6 +35,18 @@ const router = express.Router();
  *      updatedAt:
  *         type: string
  *         example: 2022/11/11
+ *   responseCreateSchemaT:
+ *     type: object
+ *     properties:
+ *      descriptions:
+ *        type: string
+ *        example: 'Test for transactions'
+ *      amount:
+ *         type: integer
+ *         example: 204
+ *      categoryId:
+ *        type: integer
+ *        example: 2
  *   responseT:
  *        type: array
  *        items:
@@ -74,7 +86,7 @@ const router = express.Router();
  *         content:
  *          application/json:
  *           schema:
- *             $ref: '#/definitions/transactionSchema'
+ *             $ref: '#/definitions/responseCreateSchemaT'
  *     responses:
  *       '200':
  *         description: Users retrieved successfully
@@ -189,7 +201,7 @@ router.get(
  *         content:
  *          application/json:
  *           schema:
- *             $ref: '#/definitions/transactionSchema'
+ *             $ref: '#/definitions/responseCreateSchemaT'
  *     responses:
  *       '200':
  *         description: Users retrieved successfully
