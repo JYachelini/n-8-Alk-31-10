@@ -53,6 +53,24 @@ const router = express.Router();
  *      message:
  *        type: string
  *        example: 'errors msg'
+ *   userSchema:
+ *     type: object
+ *     properties:
+ *      firstName:
+ *        type: string
+ *        example: John
+ *      lastName:
+ *         type: string
+ *         example: Connor
+ *      email:
+ *         type: string
+ *         example: johnc@gmail.com
+ *      avatar:
+ *        type: string
+ *        example: localhost:3000/uploads/12312.webp
+ *      password:
+ *        type: string
+ *        example: 12345678
  */
 
 /**
@@ -148,6 +166,7 @@ router.get(
  *             schema:
  *               $ref: '#/definitions/error'
  */
+
 router.delete(
   '/:id',
   validator(paramSchema.validatorId),
@@ -155,6 +174,43 @@ router.delete(
   ownershipUser,
   userController.remove
 );
+
+/**
+ * @swagger
+ * /users/{userId}:
+ *  put:
+ *     tags:
+ *       - Users
+ *     summary: update Users
+ *     description: update user by id
+ *     parameters:
+ *      - name: userId
+ *        in: path
+ *        description: ID of user
+ *        required: true
+ *        schema:
+ *           type: int
+ *     requestBody:
+ *         description: Created user object
+ *         content:
+ *          application/json:
+ *           schema:
+ *             $ref: '#/definitions/userSchema'
+ *     responses:
+ *       '200':
+ *         description: Users retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *                 $ref: '#/definitions/bodyUsers'
+ *       '404':
+ *         description: Error searching users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/error'
+ */
+
 router.put(
   '/:id',
   validator(paramSchema.validatorId),

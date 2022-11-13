@@ -1,15 +1,7 @@
-const { User } = require('../database/models');
-const fs = require('fs');
 const bcrypt = require('../utils/bcrypt.util');
 const { jwt } = require('../middlewares');
-const {
-  paginationUrls,
-  ErrorObject,
-  catchAsync,
-  endpointResponse,
-} = require('../helpers');
+const { ErrorObject, catchAsync, endpointResponse } = require('../helpers');
 const { userService } = require('../services');
-const { url } = require('../config/config');
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
@@ -18,11 +10,13 @@ module.exports = {
       const { page = 0 } = req.query;
       const size = 10;
       const attributes = ['firstName', 'lastName', 'email', 'createdAt'];
-      const response = await userService.list(attributes, page, size);
-      if (!response) throw new ErrorObject('Error searching users', 500);
-      const tokens = response.map((user) => jwt.encode(user.dataValues));
 
-      const pagesUrl = await paginationUrls(User, page);
+      const response = await userService.list(attributes, page, size);
+      if (!response.userList)
+        throw new ErrorObject('Error searching users', 500);
+
+      const { userList, pagesUrl } = response;
+      const tokens = userList.map((user) => jwt.encode(user));
 
       endpointResponse({
         res,
@@ -40,7 +34,7 @@ module.exports = {
   getById: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;
-      const response = await userService.find(id);
+      const response = await userService.findById(id);
       if (!response) throw new ErrorObject('User not found', 404);
       const token = jwt.encode(response);
 
@@ -53,41 +47,6 @@ module.exports = {
       next(error);
     }
   }),
-
-  create: catchAsync(async (req, res, next) => {
-    try {
-      let { firstName, lastName, email, password } = req.body;
-      const file = req.file;
-      let avatar = null;
-      if (file) avatar = `${url}/uploads/${file.filename}`;
-      password = await bcrypt.hashData(password, 10);
-
-      const user = { firstName, lastName, email, password, avatar };
-
-      const [response, created] = await userService.create(user);
-
-      if (!created) {
-        fs.unlink(req.file.path, (err) => {
-          if (err) {
-            next(new ErrorObject(err, 400));
-          }
-        });
-
-        throw new ErrorObject('User or email already exist.', 400);
-      }
-
-      const token = jwt.encode(response.dataValues);
-
-      endpointResponse({
-        res,
-        message: 'Success.',
-        body: token,
-      });
-    } catch (error) {
-      next(error);
-    }
-  }),
-
   remove: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -99,7 +58,7 @@ module.exports = {
           body: response,
         });
       } else {
-        throw new ErrorObject('id not found ', 400);
+        throw new ErrorObject('id not found ', 404);
       }
     } catch (error) {
       next(error);
@@ -120,7 +79,7 @@ module.exports = {
           body: response,
         });
       } else {
-        throw new ErrorObject('id not found or nothing to change', 400);
+        throw new ErrorObject('id not found or nothing to change', 422);
       }
     } catch (error) {
       next(error);

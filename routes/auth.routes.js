@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { authController, userController } = require('../controllers');
+const { authController } = require('../controllers');
 const { authSchema, userSchema } = require('../schemas');
 const { validator, upload } = require('../middlewares');
 
@@ -8,9 +8,9 @@ const router = Router();
 router.post('/login', validator(authSchema.login), authController.login);
 router.post(
   '/register',
-  validator(userSchema.create),
   upload.single('avatar'),
-  userController.create
+  validator(userSchema.create),
+  authController.register
 );
 
 module.exports = router;
