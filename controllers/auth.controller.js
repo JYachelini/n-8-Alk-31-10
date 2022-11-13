@@ -2,7 +2,7 @@ const bcrypt = require('../utils/bcrypt.util');
 const { ErrorObject, endpointResponse, catchAsync } = require('../helpers');
 const { jwt } = require('../middlewares');
 const { userService } = require('../services');
-const url = require('../config/config');
+const { url } = require('../config/config');
 const fs = require('fs');
 
 module.exports = {
