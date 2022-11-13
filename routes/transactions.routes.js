@@ -164,7 +164,7 @@ router.get(
 );
 /**
  * @swagger
- * /transaction/{transactionId}:
+ * /transactions/{transactionId}:
  *  put:
  *     tags:
  *       - Transactions
