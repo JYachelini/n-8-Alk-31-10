@@ -2,28 +2,33 @@ const express = require('express');
 
 const { userController } = require('../controllers');
 
-const { paramSchema } = require('../schemas');
-const { validator, ownership } = require('../middlewares');
+const { paramSchema, userSchema } = require('../schemas');
+const { validator, ownershipUser, checkAuth } = require('../middlewares');
 
 const router = express.Router();
 
-router.get('/', ownership, userController.get);
+router.get('/', checkAuth, ownershipUser, userController.get);
+
 router.get(
   '/:id',
   validator(paramSchema.validatorId),
-  ownership,
+  checkAuth,
+  ownershipUser,
   userController.getById
 );
 router.delete(
   '/:id',
   validator(paramSchema.validatorId),
-  ownership,
+  checkAuth,
+  ownershipUser,
   userController.remove
 );
 router.put(
   '/:id',
   validator(paramSchema.validatorId),
-  ownership,
+  validator(userSchema.create),
+  checkAuth,
+  ownershipUser,
   userController.update
 );
 
