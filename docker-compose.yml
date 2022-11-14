@@ -9,7 +9,7 @@ services:
    - '3306:3306'
   hostname: walletDB
   environment:
-   MYSQL_DATABASE: 'wallet'
-   MYSQL_USER: 'n8-alk'
-   MYSQL_PASSWORD: '123'
-   MYSQL_ROOT_PASSWORD: '123'
+   MYSQL_DATABASE: ${DB_NAME}
+   MYSQL_USER: ${DB_USER}
+   MYSQL_PASSWORD: ${DB_PASSWORD}
+   MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
