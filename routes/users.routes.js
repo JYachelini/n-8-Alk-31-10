@@ -35,7 +35,6 @@ const router = express.Router();
  *         example: johnc@gmail.com
  *      avatar:
  *        type: string
- *        example: localhost:3000/uploads/12312.webp
  *      createdAt:
  *        type: string
  *        example: 2022/11/11
@@ -81,7 +80,6 @@ const router = express.Router();
  *         example: johnc@gmail.com
  *      avatar:
  *        type: string
- *        example: localhost:3000/uploads/12312.webp
  *        format: binary
  *      password:
  *        type: string

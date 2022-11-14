@@ -47,6 +47,9 @@ const router = express.Router();
  *      categoryId:
  *        type: integer
  *        example: 2
+ *      date:
+ *        type: string
+ *        example: 2022
  *   responseT:
  *        type: array
  *        items:

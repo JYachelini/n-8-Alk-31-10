@@ -6,7 +6,8 @@ module.exports = {
   get: catchAsync(async (req, res, next) => {
     try {
       const response = await categoryService.list();
-      endpointResponse({
+      console.log(response);
+      return endpointResponse({
         res,
         message: 'Categories retrieved successfully',
         body: response,
