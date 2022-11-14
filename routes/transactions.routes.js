@@ -146,7 +146,7 @@ router.post(
 router.get('/', checkAuth, transactionController.get);
 /**
  * @swagger
- * /transactions/{userId}:
+ * /transactions/{transactionId}:
  *  get:
  *     tags:
  *       - Transactions
