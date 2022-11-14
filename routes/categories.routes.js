@@ -12,7 +12,7 @@ const router = express.Router();
  *     type: object
  *     properties:
  *      id:
- *        type: int
+ *        type: integer
  *        example: 4
  *      name:
  *        type: string
@@ -98,7 +98,6 @@ router.post('/', validator(categorySchema.create), categoriesController.create);
  *             schema:
  *               $ref: '#/definitions/error'
  */
-
 router.get('/', categoriesController.get);
 
 /**
@@ -115,7 +114,7 @@ router.get('/', categoriesController.get);
  *        description: ID of category
  *        required: true
  *        schema:
- *           type: int
+ *           type: integer
  *     responses:
  *       '200':
  *         description: Category retrieved successfully
@@ -146,7 +145,7 @@ router.get('/:id', categoriesController.getById);
  *        description: ID of category
  *        required: true
  *        schema:
- *           type: int
+ *           type: integer
  *     requestBody:
  *         description: Created category object
  *         content:
@@ -183,7 +182,7 @@ router.put('/:id', categoriesController.update);
  *        description: ID of category
  *        required: true
  *        schema:
- *           type: int
+ *           type: integer
  *     responses:
  *       '200':
  *         description: Category was deleted successfully
